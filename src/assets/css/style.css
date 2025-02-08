@@ -361,14 +361,14 @@
 }
 .card{
     width: 340px; 
-    height: 322px; 
+    /* height: 322px;  */
     border-radius: 8px; 
-    overflow: hidden;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* 陰影效果 */
+    /* overflow: hidden; */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
 }
 .card-image img {
     width: 100%; 
-    height: auto;
+    height: 170px;
     object-fit: cover;
     object-position: center;
 }

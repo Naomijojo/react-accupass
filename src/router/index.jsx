@@ -1,17 +1,25 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Home, Event } from '@/pages'
+import Layout from '@/components/Layout'
+import { Home, Event, NotFound } from '@/pages';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />
-  },
-  {
-    path: "/event/:id",
-    element: <Event />
-  },
-  {
-    path:
+    element: <Layout />,
+    children: [
+      { 
+        path: "/",
+        element: <Home /> 
+      },
+      {
+        path: "/event/:id", 
+        element: <Event /> 
+      },
+      {
+        path: "*",
+        element: <NotFound />
+      }  
+    ]
   }
 ]) 
 
