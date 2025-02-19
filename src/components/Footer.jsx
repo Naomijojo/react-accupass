@@ -9,6 +9,7 @@ const Footer = () => {
             </div>
         </footer>
     </div>
+
   )
 }
 
