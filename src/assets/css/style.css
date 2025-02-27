@@ -74,8 +74,9 @@ a{
 /*-------------------------------------*\
     Navigation
 \*-------------------------------------*/
-/* ---header--- */
-.header-wrapper{
+/* ---home-header--- */
+.header-wrapper,
+.search-header-wrapper{
     position: fixed;
     width: 100%;
     z-index: 999;
@@ -147,6 +148,7 @@ a{
     left: 0;
     right: 0;
     margin: auto;
+    cursor: pointer;
 }
 .header-logo img{
     width: 100%;
@@ -221,6 +223,7 @@ a{
 .header-creat-event-button-container a:hover{
     background-color: #03a9f4;
 }
+
 /* ---tab-nav--- */
 .tab-list-container{
     position: fixed; 
@@ -235,48 +238,81 @@ a{
 .tab-list{
     max-width: 1080px;
     margin: 0 auto;
+    list-style-type: none;
 }
-.tab{
-    flex: 0 0 25%;
-    height: 68px;
-    color: #b5bac1;
-    font-weight: 600;
-    cursor: pointer;
+.tab-item{
+    flex: 1;
+    text-align: center;
 }
 .tab-inner{
-    width: 100%;
-    margin: 16px 0;
-    padding: 6px 0;
+   display: block;
+   width: 100%;
+   margin: 16px 0;
+   padding: 6px 0;
+   text-align: center;
 }
 .tab-icon{
-    width: auto;
+    display: inline-block;
+    width: 20px;
     height: 20px;
-    padding-right: 8px;
+    vertical-align: middle;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.1s;
 }
 .tab-label{
-    vertical-align: middle;
+    color: #b5bac1;
     font-size: 16px;
-    margin: 0;
+    font-weight: 600;
+    vertical-align: middle;
 }
 .tab-bar{
     width: 100%;
     height: 4px;
     transition: all .3s;
 }
+.icon-star{
+    background-image: url(../images/common/icon-tab-star.png);
+}
+.icon-learn{
+    background-image: url(../images/common/icon-tab-learn.png);
+}
+.icon-art{
+    background-image: url(../images/common/icon-tab-art.png);
+}
+.icon-experience{
+    background-image: url(../images/common/icon-tab-experience.png);
+}
+
 
 .tab1:hover .tab-bar{
     background-color: #0088d2;
 }
+.tab1:hover .icon-star{
+    background-image: url(../images/common/icon-tab-star-hover.png);
+}
 .tab2:hover .tab-bar{
     background-color: #00579c;
+}
+.tab2:hover .icon-learn{
+    background-image: url(../images/common/icon-tab-learn-hover.png);
 }
 .tab3:hover .tab-bar{
     background-color: #ffa826;
 }
+.tab3:hover .icon-art{
+    background-image: url(../images/common/icon-tab-art-hover.png);
+}
 .tab4:hover .tab-bar{
     background-color: #00b4b2;
 }
+.tab4:hover .icon-experience{
+    background-image: url(../images/common/icon-tab-experience-hover.png);
+}
 
+
+/* tags-counts */
 .tags-counts{
     right: 16px;
     padding-left: 8px;
@@ -291,15 +327,78 @@ a{
     margin-left: 8px;
 }
 
+/* ---search-header--- */
+.search-header-bar{
+    width: 100%;
+    height: 72px;
+    padding: 16px 24px;
+    scrollbar-color: #e7ecf3 transparent;
+}
+.search-header-logo-container,
+.search-header-user-container{
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.search-header-link{
+    color: #6d7278;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 700;
+}
+.search-header-link:hover{
+    color: #00aaf5;
+}
+.search-header-link:active{
+    color: #3b3f45;
+}
+.search-header-divider{
+    width: 1px;
+    height: 16px;
+    margin: 0 8px;
+    background: #b5bac1;
+}
+.SearchTitle{
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 49px;
+    color: #3b3f45;
+}
+.SearchPageBar{
+    padding: 24px 0;
+}
+.SearchBarDrown{
+    position: relative;
+    width: 400px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+.SearchBar{
+    position: relative;
+    height: 40px;
+    padding: 0 32px;
+    border: 1px solid rgba(0, 0, 0, 0);
+    background-color: #f5f5f5;
+    border-radius: 20px;
+    transition: all .3s ease-in-out;
+}
+.SearchBar input{
+    background-color: rgba(0, 0, 0, 0);
+    color: #3b3f45;
+    width: 100%;
+    padding: 7px 0;
+    line-height: 7px;
+    font-size: 16px;
+    font-weight: 700;
+    outline: none;
+    border: none;
+}
+.SearchPage-divider{
+    border-bottom: 1px solid #eff4fb;
+    margin-top: 16px;
+}
+
 
 /* ---banner--- */
-.banner-wrap{
-    position: relative;
-    width: 100%;
-    height: 540px;
-    margin-bottom: 14px;
-    margin-top: 10px;
-}
 .container {
     width: auto;
     max-width: 1080px;
@@ -310,19 +409,6 @@ a{
     border-radius: 16px;
     margin-bottom: 1rem;
 }
-
-
-/* .owl-carousel .owl-stage-outer{
-    overflow: hidden;
-}
-.owl-carousel .list-item {
-    height: 100%;
-}
-.owl-carousel .list-item .image{
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-} */
 
 /* filter */
 .filter-btn{

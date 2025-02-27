@@ -1,7 +1,10 @@
 import LOGO from '../assets/images/common/icon-logo.svg';
+import { useNavigate } from 'react-router-dom';
+
 
 const Header = () => {
-  return (
+    const navigate = useNavigate()
+    return (
     <div className="header-wrapper">
         <header className="header-bar">
             <div className="header-container">
@@ -16,7 +19,7 @@ const Header = () => {
                             <span className="header-icon-caret"></span>
                         </div>
                     </div>
-                    <a href="./index.html" className="header-logo">
+                    <a href='/' className="header-logo" onClick={() => navigate(`/`)}>
                         <img src={LOGO} alt="" />
                     </a>
                     <div className="header-inner-right flex items-center">

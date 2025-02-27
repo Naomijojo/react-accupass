@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from '@/components/Layout'
-import { Home, Event, NotFound } from '@/pages';
+import { Home, Event, NotFound, Search } from '@/pages';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +14,10 @@ const router = createBrowserRouter([
       {
         path: "/event/:id", 
         element: <Event /> 
+      },
+      {
+        path:"/search",
+        element: < Search />
       },
       {
         path: "*",
