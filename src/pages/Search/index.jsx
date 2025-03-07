@@ -109,6 +109,7 @@ const Search = () => {
             {/* 條件檢查 location 或 tag 是否有值 ? `如果location(tag)有值則顯示該值`:沒有則顯示所有活動*/}
           </h1>
 
+
           <div className="SearchPageBar flex flex-col">
             <div className="SearchBarDrown relative ">
               <div className="SearchBar flex justify-center items-center">
