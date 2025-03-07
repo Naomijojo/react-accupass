@@ -2,10 +2,10 @@ import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom';
 import EventCard from "@/components/EventCard";
-import SearchHeader from "@/components/SearchHeader";
-import SearchIcon from "@/assets/images/common/icon-search-filterbtn.svg"
-import { Select } from 'antd';
-
+import FilterhIcon from "@/assets/images/common/icon-search-filterbtn.svg"
+import IconSearchHistory from "@/assets/images/common/icon-search-history.svg"
+import sortButtonDown from "@/assets/images/common/icon-sortDown.svg"
+import { Select } from 'antd'
 
 //useState管理狀態/ useEffect處理狀態 / useSearchParams讀取和設置 URL 查詢參數(先在router設定好才抓的到) 
 
@@ -13,20 +13,34 @@ import { Select } from 'antd';
 // 2.過濾數據 : 查詢參數 tag 和 location 對 recommendData 進行過濾
 // 3.渲染結果 : 根據過濾後的 searchData 渲染結果。如果沒有相關活動，顯示提示消息；如果有活動，則顯示活動的標題。
 
+
+
 const Search = () => {
+  //使用useSearchParams查詢參數
   const [searchParams] = useSearchParams();
+  //searchData:搜尋到的資料
   const [searchData, setSearchData] = useState([]);
+  //isSearchClick:是否點擊搜尋
+  const [isSearchClick, setIsSearchClick] = useState(false);
+  //searchHistory:搜尋紀錄
+  const [searchHistory, setSearchHistory] = useState([]);
+  //allData:所有資料
+  const [allData, setAllData] = useState([]);
+  //input的值
+  const [value, setValue] = useState('');
+
+
 
   //查詢字串
   const location = searchParams.get('l')
   const tag = searchParams.get('q')
-  console.log(`location ${location}`)
-  console.log(`tag ${tag}`)
+  console.log(`location ${location}`)  
+  console.log(`tag ${tag}`)  
 
   const  getAllData = async() =>{
     //api獲取推薦卡片的資料
     const { data: recommendData } = await homeApi.getRecommend()
-    console.log(recommendData)
+    setAllData(recommendData)
     let filteredData = recommendData;
     
     //根據tag & location 過濾
@@ -43,12 +57,51 @@ const Search = () => {
   useEffect(() => {
     getAllData();
   }, []);
-
   
+  //重複代碼包在一起並命名為addSearchHistory
+  const addSearchHistory = (newSearchHistory) => {
+    localStorage.setItem('searchHistory', JSON.stringify(newSearchHistory))
+    setSearchHistory(newSearchHistory)
+  }
+
+  const handleSearch = (keyword) =>{
+    const filteredData = allData.filter(item => item.title.includes(keyword))
+    setSearchData(filteredData)
+  } 
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13 ){
+      const keyword = e.target.value.trim()
+      //用keyword搜尋 (title的關鍵字)
+      handleSearch(keyword)
+
+      if (searchHistory.some(item => item === keyword)) return 
+      const newSearchHistory = [...searchHistory, e.target.value]
+      addSearchHistory(newSearchHistory)
+  }
+  const handleDeleteSearchHistory = (keyword) => {
+    const newSearchHistory = searchHistory.filter(item => item !== keyword)
+    addSearchHistory(newSearchHistory)
+    setValue('')
+  }}
+
+
+
+
+  //掛載時執行
+  useEffect(() => {
+    //取得localStorage的searchHistory
+    const searchHistoryStorage = localStorage.getItem('searchHistory')
+    //如果有值就轉成JSON格式
+    if (searchHistoryStorage) {
+      //將JSON格式的searchHistory存入searchHistory
+      setSearchHistory(JSON.parse(searchHistoryStorage))
+    }
+    //如果沒有值就設定為空陣列
+  },[])
 
   return (
     <div>
-      <SearchHeader />
       <div className="pt-[72px]">
         <div className="container max-w-[1080px]">
           <h1 className="SearchTitle flex justify-center items-center">
@@ -57,75 +110,71 @@ const Search = () => {
           </h1>
 
           <div className="SearchPageBar flex flex-col">
-            <div className="SearchBarDrown">
-              <Select
-                className="search-select"
-                defaultValue="輸入關鍵字"
-                style={{ width: 400 , height: 40 }}
-                // onChange={handleChange} 
-                options={[
-                  {
-                    label: <span>最近搜尋</span>,
-                    title: 'recent',
-                    options: [
-                      { label: <span>前端</span>, value: 'frontend' },
-                      { label: <span>後端</span>, value: 'backend' },
-                    ],
-                  },
-                  {
-                    label: <span>熱門搜尋</span>,
-                    title: 'popular',
-                    options: [
-                      { label: <span>大腦汗蒸幕</span>, value: '大腦汗蒸幕' },
-                      { label: <span>空間攝影攻略</span>, value: '空間攝影攻略' },
-                      { label: <span>掌握 ESG 商模關鍵</span>, value: '掌握 ESG 商模關鍵' },
-                    ],
-                  },
-                  
-                ]}
-              />
-
-
-
+            <div className="SearchBarDrown relative ">
               <div className="SearchBar flex justify-center items-center">
-                <input type="search" placeholder="輸入關鍵字..." maxLength={80} />
-                <img src={SearchIcon} alt="" className="search-icon" />
+                <input type="search" placeholder="輸入關鍵字..." maxLength={80} value={value} onChange={(e) => setValue(e.target.value)}
+                onClick={() => setIsSearchClick(true)}  
+                onKeyDown={handleKeyDown} />
+                <img src={FilterhIcon} alt="" className="search-icon" />
               </div>
+              <button className="sort-button flex">
+                <span > 排序 </span>
+                <img src={sortButtonDown} alt="" />
+              </button>
+
+              {isSearchClick && (
+                <div className=" hidden absolute w-full top-full rounded-[16px] shadow-[4px_9px_25px_rgba(59,63,69,0.15)] z-10 bg-white p-6">
+                  {searchHistory.length ? (
+                    <>
+                      <h1 className="text-[18px] font-[600] mb-2" style={{color:'#3b3f45'}}>搜尋紀錄</h1>
+                      <ul className="my-4">
+                        {searchHistory.map(item => (  
+                          <li key={item} className="flex justify-between items-center">
+                            <div className="flex items-center space-x-3">
+                              <img src={IconSearchHistory} alt="" />
+                              <span className="cursor-pointer text-gray-800 hover:text-gray-400" onClick={() => handleSearch(item)} >{item}</span>
+                            </div>
+                            <button className="hover:text-gray-400" onClick={()=> handleDeleteSearchHistory(item)}>
+                              <i className="fa-solid fa-xmark " style={{color:'#959ba1'}}></i>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </>      
+                  ) : ''}
+
+                  <h1 className="text-[18px] font-[600] mb-2" style={{color:'#3b3f45'}}>熱門搜尋</h1>
+                  <ul className="my-4">
+                    <div className="tag-module inline-flex ">
+                      <li className="text-gray-800 hover:text-gray-400">
+                        <span className="text-gray-500">前端</span>
+                      </li>
+                    </div>
+                    <div className="tag-module inline-flex">
+                      <li className="text-gray-800 hover:text-gray-400">
+                        <span className="text-gray-500 ">後端</span>
+                      </li>
+                    </div>
+                  </ul>
+                </div>
+            )}  
             </div>
             <div className="SearchPage-divider"></div>  
           </div>
-          {/* <div className="container max-w-[1080px] flex justify-start gap-x-[20px]">
-            <div className="wrap pb-[40px]">
-              <div className="filter-btn  gap-x-[20px]">
-                  <div className="filter-btn-box">
-                      <span className="text">主題</span>
-                      <i className="fa-solid fa-angle-down fa-lg"></i>
-                  </div>
-                  <div className="filter-btn-box">
-                      <span className="text">日期</span>
-                      <i className="fa-solid fa-angle-down fa-lg"></i>    
-                  </div>
-                  <div className="filter-btn-box">
-                      <span className="text">地點</span>
-                      <i className="fa-solid fa-angle-down fa-lg"></i>    
-                  </div>
-              </div>
-            </div>
-          </div> */}
 
           {!searchData.length ? (
             <p>目前沒有相關活動</p>
           ) : (
           <div className="flex flex-wrap gap-x-[30px] gap-y-[16px]">
             {searchData.map(item => (
-                <EventCard
-                    key={item.id}
-                    image={item.image}
-                    time={item.time}
-                    title={item.title}
-                    location={item.location}
-                    tag={item.tag}
-                />
+              <EventCard
+                  key={item.id}
+                  image={item.image}
+                  time={item.time}
+                  title={item.title}
+                  location={item.location}
+                  tag={item.tag}
+              />
             ))}
           </div>
           )}

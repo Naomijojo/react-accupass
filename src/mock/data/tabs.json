@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "icon": "icon-star",
+    "label": "精選",
+    "hoverColor": "#0088d2"
+  },
+  {
+    "id": 2,
+    "icon": "icon-learn",
+    "label": "學習",
+    "hoverColor": "#00579c"
+  },
+  {
+    "id": 3,
+    "icon": "icon-art",
+    "label": "藝文",
+    "hoverColor": "#ffa826"
+  },
+  {
+    "id": 4,
+    "icon": "icon-experience",
+    "label": "體驗",
+     "hoverColor": "#00b4b2"
+  }
+]

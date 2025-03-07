@@ -141,7 +141,8 @@ a{
 .header-icon{
     cursor: pointer;
 }
-.header-logo{
+.header-logo,
+.cart-logo{
     width: 114px;
     position: absolute;
     top: 13px;
@@ -396,8 +397,19 @@ a{
     border-bottom: 1px solid #eff4fb;
     margin-top: 16px;
 }
-
-
+.tag-module{
+    font-size: 14px;
+    line-height: 19px;
+    color: red;
+    border-radius: 16px;
+    background-color: #e7ecf3;
+    padding: 4px 16px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+.tag-module:hover{
+    background-color: #b3e5fc;
+}
 /* ---banner--- */
 .container {
     width: auto;
@@ -428,10 +440,14 @@ a{
 .filter-btn-box span{
     margin-right: 6px;
 }
+/* ---carousel--- */
+.carousel-container{
+    max-width: 1080px;
+    width: auto;
+    margin: 0 auto;
+}
 
-
-
-/* ---themes wrap--- */
+/* ---themes   wrap--- */
 .themes-wrap{
     width: 100%;
     margin-top: 14px;
@@ -606,128 +622,81 @@ a{
     color:#6d7278;
 }
 
-
 /* event-detail-wrapper */
 .event-detail-wrap{
     padding-top: 50px;
 }
-.AlcohoReminder-container{
-    width: 100%;
-    height: 80px;
-    background-color: rgba(26, 31, 35, .9);
-    color: #fff;
-    font-size: 36px;
-    padding: 0 70px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.AlcohoReminder-container img{
-    width: 48px;
-    height: 48px;
-    margin: 0 12px;
-}
 .event-inner-container{
     position: relative;
-    max-width: 100%;
-    width: 1080px;
+    max-width: 1080px;
     height: 100%;
     filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.1));
     margin: 10px auto 16px;
 }
-.event-banner-container{
+
+/* event-banner-box */
+.event-banner-box{
     position: relative;
 }
-.event-banner-bg-container{
+.event-banner-bg{
     overflow: hidden;
-    border-radius: 16px 16px 0 0 ;
-}
-.event-detail{
-    display: flex;
-    background-color: #fff;
 }
 .event-detail-content{
     font-size: 16px;
-    flex: 1 1;
-    border-radius: 16px;
     word-break: break-word;
-    max-width: calc(100% - 300px);
 }
-.event-basicinfo-container{
+.event-basicInfo-container{
     padding: 24px 0 32px 48px;
     background-color: #fff;
-}
-.CategoryTags{
-    display: flex;
-    gap: 8px 16px;
-    flex-wrap: wrap;
-}
-.CategoryTags-clickable{
-    border-radius: 4px;
-    font-size: 1rem;
-    line-height: 1.5;
-    font-weight: normal;
-    padding: 4px 16px;
-    white-space: nowrap;
-    color: #fff;
-    cursor: pointer;
-}
-.CategoryTags-pink{
-    background-color: #ff93c2;
-    box-shadow: 0px 2px 4px rgba(255, 147, 194, .3);
-}
-.CategoryTags-blue{
-    background-color: #00aaf5;;
-    box-shadow: 0px 2px 4px rgba(0, 170, 245, .3);
-}
-.event-header-container{
-    margin-top: 10px;
-    margin-bottom: 24px;
 }
 .event-header-container .event-title{
     font-size: 32px;
     font-weight: 600;
     color: #212121;
-    height: 48px;
     line-height: 48px;
 }
-.event-popularity-layout{
-    display: flex;
-    align-items: center;
-}
 .event-popularity-item{
-    display: flex;
-    align-items: center;
-    margin-right: 16px;
     color: #b5bac1;
     font-size: 12px;
     font-weight: 700;
-}
-.event-popularity-item span{
-    display: flex;
 }
 .event-popularity-layout .event-popularity-icon{
     margin-right: 4px;
     width: 16px;
     height: 16px;
 }
+
 /* event-info-container */
 .event-info-container{
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-
     color: #b5bac1;
     font-weight: 400;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, .1);
     padding: 24px;
-    border-radius: 16px;
     font-size: 16px;
 }
-.event-subtitle-container{
-    display: flex;
-    margin-top: 10px;
+.event-info-timer{
+    width: 100%;
+    padding: 4px;
+    color: #fff;
+    text-align: center;
+    background-color: #393d49;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .35);
+    z-index: 90;
+    margin-bottom: 12px;
+}
+.event-info-timer .timer-tick{
+    vertical-align: middle;
+    line-height: 58px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 12px;
+}
+.event-info-timer .timer-description{
+    display: inline-block;
+    vertical-align: middle;
+    width: 130px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
 }
 .event-subtitle-icon{
     display: inline-block;
@@ -738,41 +707,18 @@ a{
     background-repeat: no-repeat;
     background-size: contain;
 }
-.event-subtitle-icon.event-clock-icon{
-    background-image: url(../images/common/event-icon-time.svg);
-}
-.event-subtitle-icon.event-location-icon{
-    background-image: url(../images/common/event-icon-map.svg);
-}
-.event-subtitle-icon.event-website-icon{
-    background-image: url(../images/common/event-icon-website.svg);
-}
-.event-subtitle-icon.event-tag-icon{
-    background-image: url(../images/common/event-icon-tags.svg);
-}
-.event-subtitle-content{
-    flex: 1 1;
-    margin-left: 10px;
-    line-height: 24px;
-}
 .event-subtitle-content .event-subtitle{
     font-weight: 700;
     color: #595e64;
 }
-.event-subtitle-content .event-detail-link{
+.event-subtitle-content .event-calendar-link{
     color: #00aaf5;
     font-size: 16px;
     font-weight: 400;
     text-decoration: none;
     transition: all .2s;
 }
-.event-subtitle-content .event-calendar-link{
-    display: inline-block;
-    margin-left: 15px;
-}
 .event-subtitle-content .event-external-link{
-    display: flex;
-    align-items: center;
     font-weight: 700;
     color: #595e64;
 }
@@ -789,30 +735,11 @@ a{
     color: #959ba1;
 }
 .event-external-link .event-icon-link{
-    margin-left: 4px;
     width: 16px;
     height: 16px;
     background-position-x: center;
     background-repeat: no-repeat;
     background-size: contain;
-    background-image: url(../images/common/event-icon-link.svg);
-    flex-shrink: 0;
-}
-.event-address-remark{
-    color: #b5bac1;
-}
-.event-related-link{
-    font-size: 13px;
-}
-.event-tags-container{
-    align-items: center;
-}
-.event-content-tags-container{
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-top: 5px;
-    padding: 0;
 }
 .event-content-tags-container .event-tag{
     position: relative;
@@ -843,25 +770,24 @@ a{
     border: 1px solid #eff4fb;
     font-size: 14px;
 }
-.orginfo-container{
-    width: 300px;
+/* avatarBase */
+.avatarBase-img-container {
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+.avatarBase-img-container .avatar-img {
+    width: 100%;
+    height: 100%;
+    transition: 0.8s;
+}
+/* orgInfo-container */
+.orgInfo-container{
     padding: 24px;
 }
-.OrgInfo-box{
-    position: sticky;
-    top: 140px;
-}
-.org-info-box{
+.org-info{
     padding: 24px 24px 36px;
     border-radius: 16px;
     background-color: #fff;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, .1);
-}
-.org-title-container{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
 }
 .org-title-container .org-title{
     color: #1a1f23;
@@ -889,11 +815,6 @@ a{
     font-weight: 700;
 }
 .org-register-button{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
     padding: 16px;
     border-radius: 4px;
     color: #fff;
@@ -901,7 +822,6 @@ a{
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 16px;
     transition: all 0.3s ease;
 }
 .org-register-button:hover{
@@ -915,39 +835,574 @@ a{
     transition: transform 0.3s ease;
 }
 .org-register-button:hover i {
-    transform: translateY(-50%) translateX(6px); /* 水平向右移動 16px */
+    transform: translateY(-50%) translateX(6px); 
 }
-.org-register-icon{
-    width: 24px;
-    height: 24px;
-    background-image: url(../images/common/icon-ChevronRight.svg);
-    background-size: cover;
-    background-position: center;
-}
-.org-buttons-container{
-    display: flex;
-    margin-top: 16px;
-}
-.org-button{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-}
-.org-fav-btn,
-.org-facebook-btn,
-.org-letter-btn{
-    position: relative;
-    min-width: 66px;
-    min-height: 44px;
-}
-.org-buttons-container > div:not(:last-child) .org-button:after {
-    content: "|";
+.org-button .separator::after {
+    content: '|';
     position: absolute;
     top: 35%;
     right: -6%;
     color: #ddd;
+  }
+.org-button i{
+    padding: 16px 24px 4px;
 }
+
+/* ticketPage */
+.ticketPage{
+    margin: 20px auto 0;
+    padding: 47px 40px 25px 40px;
+    background-color: #fff;
+}
+.event-info-content{
+    font-size: 14px;
+    line-height: 1.5;
+    color: #878787;
+}
+.event-info-itemName{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.57;
+    color: #282828;
+}
+.notice-card{
+    padding: 8px;
+    border: 1px solid #eff4fb;
+    border-radius: 8px;
+}
+.notice-title{
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+}
+.notice-content{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #6d7278;
+}
+.ticket-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 35px 27px 27px;
+    transition: all .3s;
+    cursor: pointer;
+    border: 1px solid #dbdbe1;
+    margin-bottom: 14px;
+}
+.ticket-item:hover{
+    background-color: #f4f7fd;
+    border-left: 8px #2ea4f2 solid;
+}
+.ticket-item .ticket-name{
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #282828;
+    letter-spacing: .6px;
+}
+.ticket-item .ticket-price{
+    font-size: 18px;
+    line-height: 30px;
+    color: #282828;
+    font-weight: 600;
+}
+.ticket-qty{
+    display: none;
+    margin-left: 3px;
+    font-size: 17px;
+    line-height: 30px;
+    color: #2ea4f2;
+    font-weight: bold;
+}
+.ticket-qty.ticket-show{
+    display: inline-block;
+}
+.ticket-detail{
+    font-size: 16px;
+    font-weight: 600;
+    color: #2ea4f2;
+    letter-spacing: .6px;
+    cursor: pointer;
+    transition: all .2s;
+}
+.ticket-detail:hover{
+    color: #2ea4f2a3;
+}
+
+/* +-  白底藍邊藍字->藍底白字*/
+.ticket-change {
+    display: inline-block;
+    width: 52px;
+    height: 52px;
+    line-height: 52px; 
+    border-radius: 50%; 
+    border: 1px solid #2ea4f2;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, .1);
+    transition: background-color 0.3s ease; 
+}
+.ticket-change:hover {
+    background-color: #2ea4f2; 
+}
+.ticket-minus,.ticket-add{
+    color: #2ea4f2;
+}
+.ticket-change:hover .ticket-minus{
+    color: #fff;
+}
+.ticket-change:hover .ticket-add{
+    color: #fff;
+}
+
+/* 收合 */
+.ticket-info-container {
+transition: max-height 0.3s ease, opacity 0.3s ease; 
+overflow: hidden; /* 隐藏超出部分 */
+}
+
+.ticket-info-container.expanded {
+max-height: 500px; /* 展开后的最大高度，具体值可根据内容调整 */
+opacity: 1; /* 完全显示 */
+}
+
+.ticket-info-container:not(.expanded) {
+max-height: 100px; /* 收起时的高度 */
+opacity: 0.8; /* 半透明效果 */
+}
+
+.ticket-detail {
+cursor: pointer;
+color: #007BFF; /* 链接样式 */
+}
+
+.extra-info {
+margin-top: 15px;
+color: #333; /* 展开内容的颜色 */
+}
+
+/* 第二張ticket */
+.ticket-reminder{
+    flex: 1 1;
+    padding: 18px 30px;
+    cursor: pointer;
+}
+
+/* ticketSelect-bottom */
+.ticketSelect-ticket-number{
+    font-size: 15px;
+    padding-bottom: 8px;
+    color: #45494e;
+}
+.ticketSelect-bottom-container{
+    bottom: 0;
+    width: 100%;
+    padding: 10px 0;
+    background-color: #fff;
+    box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, .05);
+    transition: height .3s;
+}
+.ticketSelect-confirm-button{
+    width: 1080px;
+    height: initial;
+    background-color: #2ea4f2;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    user-select: none;
+}
+
+/* cart */
+.cartPage{
+    margin: 28px auto 26px;
+    padding: 47px 40px 42px 40px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px 0 rgba(212, 212, 212, .5);
+}
+.cart-header-wrapper{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;   
+}
+.cart-header-bar{
+    width: 100%;
+    height: 50px;
+    scrollbar-color: #e7ecf3 transparent;
+    background-color: #0088d2;
+}
+.stepper-header-wrap{
+    background-color: #fff;
+    box-shadow: 0 2px 4px 0 rgba(212, 212, 212, .5);
+}
+.stepper-bar{
+    width: 1080px;
+    margin: 0 auto;
+    height: 58px;
+    padding-left: 22px;
+    padding-right: 19px;
+}
+.step-arrow{
+    margin: 0 14px;
+    position: relative;
+}
+.stepper .num{
+    background-color: #fff;
+    color: #d2d2d2;
+    border: 1px solid #d2d2d2;
+    height: 25px;
+    width: 25px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+}
+.stepper .title{
+    margin-left: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #d2d2d2;
+}
+.stepper .num.stepperOn{
+    color: #fff;
+    background-color: #36353c;
+    border-color: #36353c;
+}
+.stepper .title.stepperOn{
+    color: #36353c;
+}
+
+.RegistrationPage-registration{
+    margin-left: 3%;
+    flex: 3 1;
+}
+.registration-headline{
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #282828;
+}
+.registration-headline-des{
+    font-weight: 500;
+    color: #a2a2a2;
+    font-size: 14px;
+}
+.registration-headline-des a{
+    color: #0088d2;
+    text-decoration: underline;
+}
+.registration-forms{
+    margin-bottom: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #d6d6d6;
+    border-bottom: 1px solid #d6d6d6;
+}
+.registration-form-items{
+    border-bottom: 0;
+    margin-bottom: 0;
+}
+.registration-form-items .form-field{
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 25px;
+}
+.field-label{
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.71;
+    color: #282828;
+    padding-bottom: 10px;
+}
+.field-required{
+    color: #d84a49;
+    padding-right: 3px;
+}
+.form-field input{
+    width: 100%;
+    border: 0;
+    padding: 16px 24px;
+    background-color: #f1f1f1;
+    font-size: 16px;
+}
+/* 針對IE移除箭頭 */
+select::-ms-expand {
+    display: none;    
+}
+.Select{
+    padding: 14px 18px 14px 24px;
+    background: #f1f1f1 url(https://static.accupass.com/frontend/image/common/arrow_down_black.svg) top 22px right 22px no-repeat;
+    font-size: 16px;
+    color: #282828;
+}
+.select.country-select{
+    width: 30%;
+    margin-right: 12px;
+}
+.check-button{
+    display: none;
+}
+.check-label{
+    position: relative;
+    display: inline-block;
+    padding-left: 38px;
+    font-size: 16px;
+    color: #424242;
+}
+.check-label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    min-width: 25px; 
+    min-height: 25px; 
+    border: 1.5px solid #e2e2e2;
+    border-radius: 2px; 
+    background-color: #e2e2e2;
+}
+.check-button:checked + .check-label:before {
+    background-color: #2ab3fc; 
+    border-color: #2ab3fc; 
+}
+.check-button:checked + .check-label::after {
+    content: '';
+    position: absolute;
+    left: 3px; 
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px; 
+    height: 18px; 
+    background-image: url('https://static.accupass.com/frontend/image/common/icon_check.svg'); /* 替換為你的圖片網址 */
+    background-size: contain; 
+    background-repeat: no-repeat; 
+}
+.RegistrationPage-registration .prev-btn,
+.Checkout-buttons-container .Checkout-pre-btn{
+    padding: 10px 15px;
+    border: solid 1px #d6d6d6;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 16px;
+    outline: 0;
+    transition-property: all;
+    transition-duration: .3s;
+    background-color: #fff;
+    color: #646464;
+    width: 100%;
+    font-weight: 400;
+    max-width: 350px;
+    height: 60px;
+    margin-right: 10px;
+}
+.RegistrationPage-registration .next-btn,
+.Checkout-buttons-container .Checkout-next-btn{
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 16px;
+    outline: 0;
+    transition-property: all;
+    transition-duration: .3s;
+    background-color: #0088d2;
+    color: #fff;
+    width: 100%;
+    font-weight: 600;
+    max-width: 350px;
+    height: 60px;
+    border: 0;
+}
+.next-btn.disabled{
+    background-color: #d6d6d6;
+    color: #fff;
+    pointer-events: none;
+}
+
+/* radioButton */
+.radioButton-btn{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: #e2e2e2;
+    cursor: pointer;
+    vertical-align: middle;
+    background-color: #00a8fb;
+}
+.radioButton-btn:before{
+    position: relative;
+    top: 7px;
+    left: 7px;
+    display: block;
+    width: 6px;
+    height: 6px;
+    content: "";
+    border-radius: 3px;
+    background-color: #fff;
+}
+.radioButton-text{
+    display: inline-block;
+    margin-left: 10px;
+    width: calc(99% - 30px);
+    vertical-align: middle;
+    font-size: 16px;
+    color: #424242;
+}
+
+
+
+/* cart/Step2 */
+.couponCode-discount-headline{
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #757575;
+}
+.couponCode-code{
+    padding: 12px 25px;
+    width: 282px;
+    height: 54px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #282828;
+    border: solid 1px #e0e0e0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background-color: #fff;
+    outline: none;
+}
+.couponCode-locked{
+    width: 374px;
+    color: #6f6f6f;
+    background-color: #f2f2f2;
+    border-radius: 4px;
+}
+.couponCode-discount-btn{
+    width: 92px;
+    height: 54px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    border: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: #49d9b9;
+    cursor: pointer;
+    transition: opacity .3s;
+}
+.couponCode-discount-disabled{
+    background-color: #d6d6d6;
+    pointer-events: none;
+}
+.OrderDetail-headline{
+    height: 72px;
+    padding: 25px 36px 25px 25px;
+    justify-content: space-between;
+    align-items: center;
+    border: solid 1px rgba(151, 151, 151, .28);
+    border-radius: 4px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .05);
+    user-select: none;
+    cursor: pointer;
+}
+.OrderDetail-headline .detail-label{
+    margin-right: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #474747;
+}
+.OrderDetail-toggle{
+    position: relative;
+    font-size: 16px;
+    font-weight: 600;
+    color: #00a2f2;
+}
+.Payment-types-group{
+    margin-top: 16px;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+}
+.Payment-group-heading{
+    border: 1px solid #e8e8e8;
+    padding: 11px 19px;
+    border-radius: 4px 4px 0 0;
+}
+.payment-left{
+    flex: 1 1;
+    padding: 0 10px;
+    font-size: 16px;
+    color: #676767;
+}
+.Payment-wrap{
+    border: 1px solid #e8e8e8;
+    padding: 11px 25px 11px 66px;
+    cursor: pointer;
+    background-color: none;
+}
+.Payment-wrap:hover{
+    border-left: 4px solid #0088d2;
+    background-color: #def2ff;
+}
+.Payment-icon-checked{
+    color: #00a2f2;
+    font-size: 2rem;
+}
+/* sort-button */
+.sort-button{
+    margin: 10px 0 0 10px ;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* Modal */
+.Modal {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, .8);
+}
+.Cancel{
+    width: 400px;
+    text-align: center;
+    background-color: #fff;
+}
+.Cancel-oops{
+    width: 155px;
+    padding-top: 40px;
+    padding-bottom: 18px;
+    margin: 0 auto;
+}
+.Cancel-description{
+    display: inline-block;
+    width: 256px;
+    text-align: center;
+    color: #717171;
+    font-size: 16px;
+    line-height: 1.63;
+    margin-bottom: 32px;
+}
+.Cancel-buttons{
+    border-top: 1px solid #e7e7e7;
+}
+.Cancel-buttons .Cancel-back,
+.Cancel-buttons .Cancel-confirm{
+    cursor: pointer;
+    background-color: #fff;
+    font-weight: 600;
+    width: 200px;
+    height: 60px;
+    padding: 0;
+    font-size: 16px;
+    color: #00a2f2;
+}
+
 
 /*---------------------------*\
            Footer

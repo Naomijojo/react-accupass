@@ -1,6 +1,5 @@
 @import './normalize.css';
 @import './style.css';
-@import './AvatarBase.css';
 
 
 @tailwind base;
@@ -10,23 +9,32 @@
 *{
   box-sizing: border-box; 
 }
+body{
+  font-family: "Noto Sans", "Apple Casual", Corbel, "Microsoft JhengHei Fixed", "Microsoft JhengHei", sans-serif;
+  margin: 0;
+}
+select {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
 /* carousel */
 .ant-carousel .slick-dots li{
-  width: 16px;
-  height: 16px;
+  width: 8px;
+  height: 8px;
 }
 .ant-carousel .slick-dots .slick-active{
-  width: 16px !important;
-  height: 16px !important;
+  width: 8px !important;
+  height: 8px !important;
 }
 .ant-carousel .slick-dots li button{
-  width: 16px;
-  height: 16px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
 }
 .ant-carousel .slick-dots .slick-active::after{
-  width: 16px !important;
-  height: 16px;
+  width: 8px !important;
+  height: 8px;
   border-radius: 50% !important;
 }
 /* select */

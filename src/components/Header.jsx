@@ -1,5 +1,5 @@
-import LOGO from '../assets/images/common/icon-logo.svg';
-import { useNavigate } from 'react-router-dom';
+import LOGO from '../assets/images/common/icon-logo.svg'
+import { useNavigate } from 'react-router-dom'
 
 
 const Header = () => {
@@ -35,7 +35,6 @@ const Header = () => {
                             <p className="header-translate">翻譯</p>
                             <p className="header-swich">主題</p>
                             <p className="header-auth-herf">登入</p>
-                            <p className="header-auth-herf">註冊</p>
                         </div>
                         <div className="header-creat-event-button-container">
                             <div>

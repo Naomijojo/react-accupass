@@ -7,7 +7,7 @@ const SearchHeader = () => {
         <div className="search-header-logo-container flex items-center">
           <a href="/" className="flex items-center"> 
             <span className='mr-[10px]'>
-              <img src={LOGO} alt="Logo" />
+              <img src={LOGO} alt="" />
             </span>
             <span className='ml-[10px]'>
               <h4 className='search-header-link'>主辦榜</h4>
@@ -20,7 +20,6 @@ const SearchHeader = () => {
           <div className="search-header-divider"></div>
           <h4 className='search-header-link'>註冊</h4>
         </div>
-
       </header>
     </div>
   )
