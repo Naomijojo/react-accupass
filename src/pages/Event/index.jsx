@@ -1,7 +1,7 @@
 import EventCardView from "@/assets/images/common/icon-event-card-view.svg"
 import EventCardHeart from "@/assets/images/common/icon-event-card-heart.svg"
 import EventClockIcon from "@/assets/images/common/event-icon-time.svg"
-import EventLocationIcon from "@/assets/images/common/event-icon-website.svg"
+import EventLocationIcon from "@/assets/images/common/event-icon-map.svg"
 import EventIconLink from "@/assets/images/common/event-icon-link.svg"
 import EventIconTags from "@/assets/images/common/event-icon-tags.svg" 
 
@@ -9,30 +9,37 @@ import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
 import { useNavigate } from 'react-router-dom';
+import { useTicketStore } from '@/store/ticket'
+
 
 const Event = () => {
    const params = useParams() //動態參數params
    const routeId = Number(params.id) //轉換成數字
-   console.log(routeId);
-   const [event, setEvent] = useState(null)
+   const [ event, setEvent ] = useState(null)
    const navigate = useNavigate()
+   const { setTicket } = useTicketStore()
  
+   // 根據 id 從 recommendData 中抓取資料
    const getRecommendData = async() => {
-      const { data:events } = await homeApi.getRecommend()
+      const { data: events } = await homeApi.getRecommend()
       const detail = events.find(item => item.id === routeId)
-      console.log(detail)
       setEvent(detail)
- 
    }
-
-   // 時間戳轉換
- 
    useEffect(() => {
       getRecommendData()
-   },[])
-    
+   },[]) //沒有依賴陣列,表掛載時執行一次 //如[]內有變數則再執行一次(當routeId變化時重新執行)
+
+   
+   const handleTicket = (item) => {
+      setTicket([item])
+      navigate(`/ticket/${item.id}`) 
+   }
+   
+   
+   
+   
+   
    if (!event) return <div>loading...</div> 
-    
    return (
       <div className="pt-[50px]">
          <div className="event-inner-container">
@@ -62,7 +69,6 @@ const Event = () => {
                            <div className="event-subtitle-container flex mt-[10px]">
                               <img src={EventClockIcon} className="event-subtitle-icon" />
                               <div className="event-subtitle-content ml-[10px] leading-[24px]">
-                                 {/* 時間戳轉換 */}
                                  <div className="event-subtitle">{event.time}
                                     <a href="https://calendar.google.com/calendar/u/0/r/eventedit?sf=true&output=xml&sprop=name:Accupass&sprop=website:https://www.accupass.com&text=2025%E7%B2%89%E7%B4%85%E7%91%9C%E7%8F%88&dates=20250308T073000Z/20250309T090000Z&location=%E5%8F%B0%E7%81%A3%E5%8F%B0%E5%8C%97%E5%B8%82%E4%BF%A1%E7%BE%A9%E5%8D%80%E5%BF%A0%E5%AD%9D%E6%9D%B1%E8%B7%AF%E4%BA%94%E6%AE%B58%E8%99%9F&details=%E6%B4%BB%E5%8B%95%E5%90%8D%E7%A8%B1%EF%BC%9A2025%E7%B2%89%E7%B4%85%E7%91%9C%E7%8F%88%0A%E6%B4%BB%E5%8B%95%E7%B6%B2%E5%9D%80%EF%BC%9Ahttps://www.accupass.com/event/2501120956491666733158?utm_campaign%3Daccu_theme&utm_medium=home_north&utm_source=Web" target="_blank" className="event-calendar-link inline-block ml-[15px]">
                                     加入行事曆
@@ -110,15 +116,15 @@ const Event = () => {
                             
                            <div className="org-description org-expand">
                               <p className="org-info-text">{event.orgInfoText}</p>
-                              <p className="org-info-datetime">{event.time}</p>
                            </div>
-                           <a className="org-register-button flex justify-center items-center h-[50px] mt-[16px]" href="" onClick={() => navigate('/ticket')} >立即報名 <i className="fa-solid fa-chevron-right fa-lg"></i> </a>
+                           <button className="org-register-button flex justify-center items-center w-[200px] h-[50px] mt-[16px]" href="" onClick={() => handleTicket(event)}> 立即報名 <i className="fa-solid fa-chevron-right fa-lg"></i> </button>
                             
                            <div className="org-buttons-container flex justify-center items-center mt-[40px]" >
                               <div className="org-button flex justify-center " >
-                                 <i className="fa-regular fa-heart fa-xl  w-[66px] h-[44px] separator"  style={{ color: '#bdbdbd' }} ></i>
-                                 <i className="fa-brands fa-facebook-f fa-xl w-[66px] h-[44px] separator" style={{color:'#bdbdbd'}} ></i>
-                                 <i className="fa-solid fa-envelope fa-xl  w-[66px] h-[44px] " style={{color:'#bdbdbd'}} ></i>
+
+                                 <i className="fa-regular fa-heart fa-lg  w-[66px] h-[44px] separator cursor-pointer icon-hover"  ></i>
+                                 <i className="fa-brands fa-facebook-f fa-lg w-[66px] h-[44px] separator cursor-pointer icon-hover" style={{color:'#bdbdbd'}} ></i>
+                                 <i className="fa-solid fa-envelope fa-lg  w-[66px] h-[44px] cursor-pointer" style={{color:'#bdbdbd'}}  ></i>
                               </div>                              
                            </div>
                         </div>

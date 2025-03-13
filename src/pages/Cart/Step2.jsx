@@ -1,28 +1,52 @@
 import NoticeIcon from '@/assets/images/common/noticeCard/noticeCard-icon.svg'
 import PaymentIconChecked from '@/assets/images/common/payment-icon-checked.svg'
 
-
+import { homeApi } from "@/api/home"
+import { useState, useEffect } from 'react'
+import { useParams } from "react-router-dom"
+import { useNavigate } from 'react-router-dom'
 
 
 const Step2 = () => {
+  const params = useParams() //動態參數params
+  const routeId = Number(params.id) //轉換成數字
+  const [ event, setEvent ] = useState(null)
+  const navigate = useNavigate()
+
+
+  // 根據 id 從 recommendData 中抓取資料
+  const getRecommendData = async() => {
+    const { data: events } = await homeApi.getRecommend()
+    const detail = events.find(item => item.id === routeId)
+    setEvent(detail)
+  }
+  useEffect(() => {
+    getRecommendData()
+  },[]) //沒有依賴陣列,表掛載時執行一次 //如[]內有變數則再執行一次(當routeId變化時重新執行)
+
+  const GoToStep3 = () => {
+    navigate('/cart/${routeId}/step3') 
+  }
+  const BackToCart =() => {
+    navigate(`/cart/${routeId}`)
+  }
 
 
 
-
-
+  if (!event) return <div>loading...</div>
   return (
     <div className="pt-[108px]" style={{ backgroundColor: '#eff4fb' }}>
       <div className="cartPage flex w-[1080px] min-h-[calc(100vh-120px)] ">
       <div className="event-info-wrapper inline-block w-[25%]">
-        <img className="mb-[24px]" src="https://static.accupass.com/eventbanner/2502040503526775598300_P520x260.jpg" alt="" />
+        <img className="mb-[24px]" src={event.image} alt="" />
         <div className="event-info-timer">
           <span className='timer-tick'>20:00</span>
           <span className='timer-description'>為確保您的權益，未完成訂單將自動取消</span>
         </div>
         <div className="event-info-content">
-          <p className="event-info-itemName mb-[20px]">2025粉紅瑜珈</p>
-          <p className="event-info-itemTime mb-[5px]">2025.03.08 (六) 15:30 - 03.09 (日) 17:00 (GMT+8)</p>
-          <p className="event-info-itemAddress mb-[5px]">台灣台北市信義區忠孝東路五段8號</p>
+          <p className="event-info-itemName mb-[20px]">{event.title}</p>
+          <p className="event-info-itemTime mb-[5px]">{event.time}</p>
+          <p className="event-info-itemAddress mb-[5px]">{event.address}</p>
           <div className="mt-[24px]">
             <div className="notice-card flex flex-col items-start gap-2">
               <div className="notice-title flex gap-2 ">
@@ -86,18 +110,21 @@ const Step2 = () => {
                 <div className="flex items-center cursor-pointer">
                   <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_allpaycreditcard.png'} alt="" />
                   <div className="payment-left">信用卡 - VISA / Master Card / JCB</div>
+                  <img className='Payment-icon-checked' src={PaymentIconChecked} alt="" />
                 </div>
               </div>
               <div className="Payment-wrap">
                 <div className="flex items-center cursor-pointer">
                   <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_linepay.png'} alt="" />
                   <div className="payment-left">LINE PAY</div>
+                  <img className='Payment-icon-checked' src={PaymentIconChecked} alt="" />
                 </div>
               </div>
               <div className="Payment-wrap">
                 <div className="flex items-center cursor-pointer">
                   <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_jkopay.png'} alt="" />
                   <div className="payment-left">街口支付</div>
+                  <img className='Payment-icon-checked' src={PaymentIconChecked} alt="" />
                 </div>
               </div>
             </div>
@@ -112,6 +139,7 @@ const Step2 = () => {
                 <div className="flex items-center cursor-pointer">
                   <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_chainstore.png'} alt="" />
                   <div className="payment-left">超商代碼 - 全家 FamiPort</div>
+                  <img className='Payment-icon-checked' src={PaymentIconChecked} alt="" />
                 </div>
               </div>
               <div className="Payment-wrap">
@@ -124,8 +152,8 @@ const Step2 = () => {
             </div>
           </div>
           <div className="Checkout-buttons-container flex mt-[20px]">
-            <button className='Checkout-pre-btn' >上一步</button>
-            <button className='Checkout-next-btn'>前往付款</button>
+            <button className='Checkout-pre-btn' onClick={BackToCart}>上一步</button>
+            <button className='Checkout-next-btn' onClick={GoToStep3}>前往付款</button>
           </div>
           </div>
       </div>          

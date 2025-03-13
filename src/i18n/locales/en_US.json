@@ -1,3 +1,40 @@
 {
-    "login": "Login"
+  "login": "Login",
+  "user": "USER",
+  "myTickets": "My Tickets",
+  "myPage": "My Page",
+  "myFiles": "My Files",
+  "accountManagement": "Account Management",
+  "organizerCenter": "Organizer Center",
+  "logout": "Logout",
+  "search_activities":"Search Activities",
+  "language":"Language",
+  "mode":"Mode",
+  "organize_activities":"Organize",
+  "tab":{
+    "featured": "Featured",
+    "learning":"Learning",
+    "art":"ART",
+    "experience":"Experience"
+  },
+  "hot_recommends":"Hot Recommendations",
+  "fresh_news":"Fresh News",
+  "featured_events":"Featured Events",
+  "more":"More",
+  "organizer":"Organizer",
+  "no_activities":"There is no activity at this time",
+  "keywords":"KeyWords",
+  "search_history":"Search History",
+  "popular_search":"Popular Search",
+  "sort": {
+    "label": "Sort",
+    "asc": "Oldest to Newest",
+    "desc": "Newest to Oldest"
+  },
+  "location": {
+    "taipei": "Taipei",
+    "taichung": "Taichung",
+    "kaohsiung": "Kaohsiung",
+    "singapore": "Singapore"
+  }
 }

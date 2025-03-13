@@ -1,3 +1,40 @@
 {
-    "login": "登入"
+  "login": "登入",
+  "user": "使用者",
+  "myTickets": "我的票券",
+  "myPage": "我的頁面",
+  "myFiles": "我的檔案",
+  "accountManagement": "帳號管理",
+  "organizerCenter": "主辦中心",
+  "logout": "登出",
+  "search_activities": "找活動",
+  "language": "語言",
+  "mode": "模式",
+  "organize_activities": "辦活動",
+  "tab":{
+    "featured": "精選",
+    "learning": "學習",
+    "art": "藝文",
+    "experience": "體驗"
+  },
+  "hot_recommends": "熱門推薦", 
+  "fresh_news": "每天一點新鮮事",
+  "featured_events": "精選活動",
+  "more": "更多活動",
+  "organizer": "主辦榜",
+  "no_activities": "目前沒有相關活動",
+  "keywords": "輸入關鍵字",
+  "search_history": "搜尋紀錄",
+  "popular_search": "熱門搜尋",
+  "sort": {
+    "label": "排序",
+    "asc": "由舊到新",
+    "desc": "由新到舊"
+  },
+  "location": {
+    "taipei": "台北",
+    "taichung": "台中",
+    "kaohsiung": "高雄",
+    "singapore": "新加坡"
+  }
 }

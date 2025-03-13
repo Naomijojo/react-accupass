@@ -3,57 +3,61 @@
 import NoticeIcon from '@/assets/images/common/noticeCard/noticeCard-icon.svg'
 
 
-import { homeApi } from "@/api/home";
-import { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
-import { useNavigate } from 'react-router-dom'; 
+import { homeApi } from "@/api/home"
+import { useState, useEffect } from 'react'
+import { useParams } from "react-router-dom"
+import { useNavigate } from 'react-router-dom'
+import { useCartStore } from '@/store/cart'
 
 
 const Ticket = () => {
-  const params = useParams(); // 動態參數params
-  const routeId = Number(params.id); // 轉換成數字
-  const [event, setEvent] = useState(null);
-  const navigate = useNavigate(); 
+  const params = useParams() // 動態參數params
+  const routeId = Number(params.id) // 轉換成數字
+  const [ event, setEvent] = useState(null)
+  const navigate = useNavigate()
+  const { setCart } = useCartStore() //獲取購物車狀態和更新函數
 
+
+  // 根據 id 從 recommendData 中抓取資料
   const getEventData = async () => {
     const { data: events } = await homeApi.getRecommend();
     const detail = events.find(item => item.id === routeId);
     setEvent(detail);
-  };
-
+  }
+  
   useEffect(() => {
     getEventData();
-  }, []);
+  }, []) //沒有依賴陣列,表掛載時執行一次 //如[]內有變數則再執行一次(當routeId變化時重新執行)  
+  
+  const handleAddToCart = (item) => {
+    setCart([item])
+    navigate(`/cart/${item.id}`) 
+  }
+  
+  //更新票數及價格  點擊+-會影響ticketSelect-ticket-number結果
+  // const handleUpdateNumber = () => {
+  //   const newNumber = [...cart, { item: '新票券' }]; // 假設添加一個新票券
+  //   setCart(newNumber); // 更新購物車
+  // };
 
-
-
+  
+  
   // onclick +-
-
-
+  
+  
   // 收合
-
-
-
+  
+  
+  if (!event) return <div>loading...</div>
   return (
     <div className="pt-[50px]"  style={{ backgroundColor: '#eff4fb' }}>
        <div className="ticketPage flex w-[1080px] min-h-[calc(100vh-120px)]">
           <div className="event-info-wrapper inline-block w-[25%]">
-            <img className="mb-[24px]" src="https://static.accupass.com/eventbanner/2502040503526775598300_P520x260.jpg" alt="" />
+            <img className="mb-[24px]" src={event.image} alt="" />
             <div className="event-info-content">
-              {/* {eventDetailData.map(item => (
-                  <EventCard
-                      key={item.id}
-                      image={item.image}
-                      time={item.time}
-                      title={item.title}
-                      location={item.location}
-                      tag={item.tag}
-                  />
-              ))} */}
-
-              <p className="event-info-itemName mb-[20px]">2025粉紅瑜珈</p>
-              <p className="event-info-itemTime mb-[5px]">2025.03.08 (六) 15:30 - 03.09 (日) 17:00 (GMT+8)</p>
-              <p className="event-info-itemAddress mb-[5px]">台灣台北市信義區忠孝東路五段8號</p>
+              <p className="event-info-itemName mb-[20px]">{event.title}</p>
+              <p className="event-info-itemTime mb-[5px]">{event.time}</p>
+              <p className="event-info-itemAddress mb-[5px]">{event.address}</p>
               <div className="mt-[24px]">
                 <div className="notice-card flex flex-col items-start gap-2">
                   <div className="notice-title flex gap-2 ">
@@ -136,7 +140,7 @@ const Ticket = () => {
               <span >總票數</span>
               <span >NT$ 0</span>
             </span>
-            <button className="ticketSelect-confirm-button h-[40px]" onClick={() => navigate('/cart')} >立即購票</button>
+            <button className="ticketSelect-confirm-button h-[40px]"  onClick={() => handleAddToCart(event)} >立即購票</button>
           </div>
         </div>
     </div>

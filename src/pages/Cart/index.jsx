@@ -1,47 +1,82 @@
 import NoticeIcon from '@/assets/images/common/noticeCard/noticeCard-icon.svg'
 
-import { useState } from 'react'
+import { homeApi } from "@/api/home"
+import { useState, useEffect } from 'react'
+import { useParams } from "react-router-dom"
 import { useNavigate } from 'react-router-dom'
-  
+// import { useCartStore } from '@/store/cart'
+
 
 const Cart = () => {
-  const [isChecked, setIsChecked] = useState(false)
-  const [isModalOpen,setIsModalOpen] =useState(false)
+  const params = useParams() //動態參數params
+  const routeId = Number(params.id) //轉換成數字
+  const [ event, setEvent ] = useState(null)
   const navigate = useNavigate()
+  const [isChecked, setIsChecked] = useState(false)
+  // const { cart, setCart } = useCartStore
+ 
+  // 根據 id 從 recommendData 中抓取資料
+  const getRecommendData = async() => {
+    const { data: events } = await homeApi.getRecommend()
+    const detail = events.find(item => item.id === routeId)
+    setEvent(detail)
+  }
+  useEffect(() => {
+    getRecommendData()
+  },[]) //沒有依賴陣列,表掛載時執行一次 //如[]內有變數則再執行一次(當routeId變化時重新執行)
 
+  
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked)
   }
-  const handleNextStep = () =>{
+
+  //用state控制必填選項 
+  // const [nameInputValue, setNameInputValue] = useState()
+  // const [emailInputValue, setEmailInputValue] = useState()
+  // const [phoneInputValue, setPhoneInputValue] = useState()
+  // const [selectedGender, setSelectedGender] = useState()
+  // const [formErrors, setFormErrors] = useState({ name: false, email: false, phone: false, gender: false })
+  //   const GoToStep2 = () => {
+  //     const errors = {
+  //       name: !nameInputValue,
+  //       email: !emailInputValue,
+  //       phone: !phoneInputValue,
+  //       gender: !selectedGender
+  //     }
+  //     setFormErrors(errors)
+  //       if (!Object.values(errors).includes(true)) {
+  //         navigate(`/cart/${routeId}/step2`)
+  //       }
+  //   }
+
+  const GoToStep2 = () => {
     if (isChecked){
-      navigate('/cart/step2')
+      navigate(`/cart/${routeId}/step2`) 
     }
   }
-  const handlePrevClick = () => {
-    setIsModalOpen(true)
-  }
-  const handleConfirm = () => {
-    navigate('/ticket')
-  }
-  const handleChancel = () => {
-    setIsModalOpen(false)
+
+  const BackToTicket = () => {
+    navigate(`/ticket/${routeId}`)
   }
 
-
+  
+  
+  if (!event) return <div>loading...</div>
   return (
+    // <CartHeader ={xxx}> 要設定為當前步驟
     <div className="pt-[108px]" style={{ backgroundColor: '#eff4fb' }}>
       <div className="cartPage flex w-[1080px] min-h-[calc(100vh-120px)] ">
-        {/* event-info-wrapper資料未連動過來 */}
         <div className="event-info-wrapper inline-block w-[25%]">
-          <img className="mb-[24px]" src="https://static.accupass.com/eventbanner/2502040503526775598300_P520x260.jpg" alt="" />
+          <img className="mb-[24px]" src={event.image} alt="" />
           <div className="event-info-timer">
+            {/* timer-tick需要網頁倒數功能 用settimeout? */}
             <span className='timer-tick'>20:00</span>
             <span className='timer-description'>為確保您的權益，未完成訂單將自動取消</span>
           </div>
           <div className="event-info-content">
-            <p className="event-info-itemName mb-[20px]">2025粉紅瑜珈</p>
-            <p className="event-info-itemTime mb-[5px]">2025.03.08 (六) 15:30 - 03.09 (日) 17:00 (GMT+8)</p>
-            <p className="event-info-itemAddress mb-[5px]">台灣台北市信義區忠孝東路五段8號</p>
+            <p className="event-info-itemName mb-[20px]">{event.title}</p>
+            <p className="event-info-itemTime mb-[5px]">{event.time}</p>
+            <p className="event-info-itemAddress mb-[5px]">{event.address}</p>
             <div className="mt-[24px]">
               <div className="notice-card flex flex-col items-start gap-2">
                 <div className="notice-title flex gap-2 ">
@@ -74,18 +109,20 @@ const Cart = () => {
           </div>
           <div className="registration-forms">
             <div className="registration-form-items">
-              <div className="form-field">
+              <div className={"form-field"}>
                 <div className="field-label"><span className='field-required'>*</span>姓名</div>
-                <input type="text" step={'1'} maxLength={'1000'} />
+                <input type="text" step={'1'} maxLength={'1000'}  />
+                {/* {formErrors.name && <div className="error-message">必填</div>} */}
               </div>
-              <div className="form-field">
+              <div className={"form-field"}>
                 <div className="field-label"><span className='field-required'>*</span>電子郵件</div>
                 <input type="text" step={'1'} maxLength={'1000'} />
+                {/* {formErrors.name && <div className="error-message">必填</div>} */}
               </div>
-              <div className="form-field">
+              <div className={"form-field"}>
                 <div className="field-label"><span className='field-required'>*</span>行動電話</div>
                 <div className="field-container flex flex-row">
-                  <select className='Select country-select w-[30%] mr-[12px]' name="" id="">
+                  <select className='Select country-select w-[30%] mr-[12px]' name="" id="" >
                     <option value="">請選擇</option>
                     <option value="886">台灣 +886</option>
                     <option value="81">日本 +81</option>
@@ -96,23 +133,25 @@ const Cart = () => {
                   </select>
                   <input className='flex-1' type="text" step={'1'} maxLength={'50'}/>
                 </div>
+                  {/* {formErrors.name && <div className="error-message">必填</div>} */}
               </div>
-              <div className="form-field">
+              <div className={"form-field"}>
                 <div className="field-label"><span className='field-required'>*</span>性別</div>
-                <div className="radioButton-box flex flex-col ">
+                <div className="radioButton-box flex flex-col" >
                   <label className="radioButton-normal bolck mb-[16px]">
                     <i className='radioButton-btn'></i>
                     <span className="radioButton-text">不公開</span>
                   </label>
-                  <label className="radioButton-normal bolck mb-[16px]">
+                  <label className="radioButton-normal bolck mb-[16px]" >
                     <i className='radioButton-btn'></i>
                     <span className="radioButton-text">男性</span>
                   </label>
-                  <label className="radioButton-normal bolck mb-[16px]">
+                  <label className="radioButton-normal bolck mb-[16px]" >
                     <i className='radioButton-btn'></i>
                     <span className="radioButton-text">女性</span>
                   </label>
                 </div>
+                {/* {formErrors.name && <div className="error-message">必填</div>} */}
               </div>
               
             </div>
@@ -124,10 +163,10 @@ const Cart = () => {
             </label>
           </div>
           <div className="registration-buttons flex">
-            <button className='prev-btn' onClick={handlePrevClick}>重新報名</button>
-            <button className={`next-btn ${isChecked ? '' : 'disabled'}`} disabled={!isChecked} onClick={handleNextStep}>下一步</button>
+            <button className='prev-btn' onClick={BackToTicket}>重新報名</button>
+            <button className={`next-btn ${isChecked ? '' : 'disabled'}`} disabled={!isChecked} onClick={GoToStep2}>下一步</button>
           </div>
-          {isModalOpen && (
+          {/* {isModalOpen && (
             <div className="Modal">
               <div className="Modal-container relative">
                 <div className="Cancel">
@@ -142,7 +181,7 @@ const Cart = () => {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

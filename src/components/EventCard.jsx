@@ -1,6 +1,7 @@
-import IconTagView from '../assets/images/common/icon-event-card-view.svg';
-import IconTagHeart from '../assets/images/common/icon-event-card-heart.svg';
+import IconTagView from '@/assets/images/common/icon-event-card-view.svg';
+import IconTagHeart from '@/assets/images/common/icon-event-card-heart.svg';
 import { useNavigate } from 'react-router-dom';
+import { formatDate } from '@/utills/time'
 
 const EventCard = ({ image, time, title, location, tag, views, likes, onGoToPage }) => {
   const navigate = useNavigate()    
@@ -12,7 +13,7 @@ const EventCard = ({ image, time, title, location, tag, views, likes, onGoToPage
         <img src={image} alt="" />
       </div>
       <div className="card-event-content flex flex-col">
-        <p className="card-event-time" >{time}</p>
+        <p className="card-event-time" >{formatDate(time)}</p>
         <p className="card-event-name" onClick={onGoToPage} >{title}</p>
         <div className="card-sub-info-container">
           <div onClick={() => navigate(`/search?l=${location}`)} className="card-event-location flex items-center">

@@ -6,49 +6,68 @@ import mockTabs from "@/mock/data/tabs.json"
 import { Carousel } from 'antd'
 import { useState, useEffect } from 'react'
 import { homeApi } from "@/api/home"
-import { useNavigate } from "react-router-dom"
-
+import { useNavigate, useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
+import { useUserStore } from '@/store/user'
+import clsx from 'clsx'
 
 const Home = () => {
+  const { t } = useTranslation(); // 解構賦值出 t 函數 {t('xxx')}
   const navigate = useNavigate()
-
+  const { darkMode } = useUserStore()
+  
   const [recommendData, setRecommendData] = useState([])
   const [articleData, setArticleData] = useState([])
   const [tabs,setTabs] = useState([]) 
-
+  
   const getRecommendData = async() => {
     const { data } = await homeApi.getRecommend()
-      console.log(data);
-      setRecommendData(data)
+    console.log(data);
+    setRecommendData(data)
   }
   const getArticleData = async() => {
     const { data } = await homeApi.getArticle()
-      console.log(data);
-      setArticleData(data)
+    console.log(data);
+    setArticleData(data)
   }
-
+  
   useEffect(() => {
     getRecommendData()
     getArticleData()
     setTabs(mockTabs)  
   }, [])
+  
+  // const { tab } = useParams 
+  // const [activeTab, setActiveTab] = useState(tab || 'featured')
+  // useEffect(() =>{
+  //   setActiveTab(tab)
+  // },[tab])
+  // const changeTab = (tab) => {
+  //   navigate(`/home/${tab}`)
+  // }
 
   return (
-    <div className="pt-[122px]">
+    <div className={clsx("main pt-[122px]", { darkMode }) }>
       <TabNav tabs={tabs} /> 
+      {/* <TabNav activeTab={activeTab} onChangeTab={changeTab} />
+      {activeTab === 'featured' && <div>精選內容</div>}
+      {activeTab === 'learning' && <div>學習內容</div>}
+      {activeTab === 'art' && <div>藝文內容</div>}
+      {activeTab === 'experience' && <div>體驗內容</div>} */}
+
       <div className="carousel-container">
         <Carousel autoplay={true} arrows className="mt-[10px] mb-[14px]">
-          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2502030803422063300661.jpg" alt=""/>
-          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2501240152185756013960.jpg" alt=""/>
-          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2408271309098543704770.jpg" alt=""/>
-          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2502260338266866880440.jpg" alt=""/>
+          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2501130700035819570130.jpg" alt=""/>
+          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2502280334271731164846.jpg" alt=""/>
+          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2405021014411727419914.jpg" alt=""/>
+          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2412181038211880693273.jpg" alt=""/>
           <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2501211525081715725743.jpg" alt=""/>
         </Carousel>   
       </div>
       <div className="container max-w-[1080px]">
 
         <div className="themes-wrap">
-          <h2 className="theme-title">熱門推薦</h2>
+          <h2 className="theme-title">{t('hot_recommends')}</h2>
           <div className="flex flex-wrap gap-x-[30px] gap-y-[16px] whitespace-nowrap">
             {recommendData.filter(item => item.category === 'recommend').map((item) =>(
             <EventCard
@@ -65,7 +84,7 @@ const Home = () => {
         </div>
 
         <div className="article-wrap">
-          <h2 className="article-title">每天一點新鮮事</h2>
+          <h2 className="article-title">{t('fresh_news')}</h2>
           <div className="flex justify-between gap-x-[20px] whitespace-nowrap">
             {articleData.filter(item => item.category === 'news-1').map((item) =>(
             <ArticleCard
@@ -78,7 +97,7 @@ const Home = () => {
         </div>        
 
         <div className="themes-wrap">
-          <h2 className="theme-title">精選活動</h2>
+          <h2 className="theme-title">{t('featured_events')}</h2>
           <div className="flex flex-wrap gap-x-[30px] gap-y-[16px] whitespace-nowrap">
             {recommendData.filter(item => item.category === 'featured-1').map((item) =>(
             <EventCard
@@ -97,7 +116,7 @@ const Home = () => {
         </div>
             
         <div className="article-wrap">
-          <h2 className="article-title">每天一點新鮮事</h2>
+          <h2 className="article-title">{t('fresh_news')}</h2>
           <div className="flex justify-between gap-x-[20px] whitespace-nowrap">
             {articleData.filter(item => item.category === 'news-2').map((item) =>(
               <ArticleCard
@@ -110,7 +129,7 @@ const Home = () => {
         </div>
 
         <div className="themes-wrap">
-          <h2 className="theme-title">精選活動</h2>
+          <h2 className="theme-title">{t('featured_events')}</h2>
           <div className="flex flex-wrap gap-x-[30px] gap-y-[16px] whitespace-nowrap">
             {recommendData.filter(item => item.category === 'featured-2').map((item) =>(
             <EventCard
@@ -129,7 +148,7 @@ const Home = () => {
         </div>
 
         <div className="article-wrap">
-          <h2 className="article-title">每天一點新鮮事</h2>
+          <h2 className="article-title">{t('fresh_news')}</h2>
           <div className="flex justify-between gap-x-[20px] whitespace-nowrap">
             {articleData.filter(item => item.category === 'news-3').map((item) =>(
             <ArticleCard
@@ -142,7 +161,7 @@ const Home = () => {
         </div>
 
         <div className="themes-wrap">
-          <h2 className="theme-title">精選活動</h2>
+          <h2 className="theme-title">{t('fresh_news')}</h2>
           <div className="flex flex-wrap gap-x-[30px] gap-y-[16px] whitespace-nowrap">
             {recommendData.filter(item => item.category === 'featured-3').map((item) =>(
             <EventCard
@@ -160,7 +179,7 @@ const Home = () => {
           </div>
         </div>
         <div className="event-more-bottom-container">
-          <button className="event-more-bottom">更多活動</button>
+          <button className="event-more-bottom">{t('more')}</button>
         </div>
       </div>
     </div>    

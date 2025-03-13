@@ -67,10 +67,54 @@ select {
   border-color: #00aaf5; 
 }
 .search-select:after {
-  content: url('../images/common/icon-search-filterbtn.svg'); /* 替換為您的圖標路徑 */
+  content: url('../images/common/icon-search-filterbtn.svg'); 
   position: absolute;
   right: 32px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none; 
 }
+
+/* darkMode */
+.darkMode .header-bar,
+.darkMode.search-header-wrapper{
+  background-color: #001a31 ;
+}
+.darkMode .header-search-input-container:hover,
+.darkMode .header-caret-event-button-container{
+  background-color: #4c5159ba;
+}
+.darkMode .header-caret-event-button-container:hover,
+.darkMode .event-more-bottom{
+  background-color: #6a707bba;
+}
+.darkMode .theme-title,
+.darkMode .article-title,
+.darkMode .card-event-name,
+.darkMode .article-card-name,
+.darkMode .SearchTitle{
+  color: #e5e7eb ;
+}
+.darkMode .search-header-link,
+.darkMode .search-results,
+.darkMode .tags:hover{
+  color: rgba(255, 255, 255, 0.87) ;
+}
+.darkMode,
+.darkMode .tags-counts{ 
+  background-color: #33485a ;
+}
+.darkMode .tab-list-container,
+.darkMode .footer{
+  background-color: #1a3146;
+}
+.darkMode .card,
+.darkMode .article-card{
+  border: 0.5px solid #e5e7eb ;
+}
+
+.card-event-location:hover i,
+.card-event-location:hover span{
+    filter: brightness(0.75); 
+}
+
