@@ -1,36 +1,51 @@
 import NoticeIcon from '@/assets/images/common/noticeCard/noticeCard-icon.svg'
 import PaymentIconChecked from '@/assets/images/common/payment-icon-checked.svg'
 
-import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
-import { useParams } from "react-router-dom"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useCartStore, } from '@/store/cart'
+import { paymentOptions } from '@/utills/payments'
+// import { Dropdown } from 'antd';
 
+  // 付款方式狀態
+  // const [creditCard, setCreditCard] = useState(true)
+  // const [linePay, setLinePay] = useState()
+  // const [street,setStreet] = useState(0)
+  // const [famiPort, setFamiPort] = useState()
+  // const [atm, setAtm] = useState()
+  // const [disabled, setDisabled] = useState(true)
 
 const Step2 = () => {
-  const params = useParams() //動態參數params
-  const routeId = Number(params.id) //轉換成數字
-  const [ event, setEvent ] = useState(null)
   const navigate = useNavigate()
+  const [ searchParams ] = useSearchParams()
+  const orderId = searchParams.get('orderId')
+  const { order, setOrder } = useCartStore()  
+  
+  //   ->1.拿取payment資料  ->2.payment完成後用find把order拿過來
+  // 管理當前選中的付款方式
+  const [selectedPayment, setSelectedPayment] = useState(paymentOptions[0].label)
 
-
-  // 根據 id 從 recommendData 中抓取資料
-  const getRecommendData = async() => {
-    const { data: events } = await homeApi.getRecommend()
-    const detail = events.find(item => item.id === routeId)
-    setEvent(detail)
-  }
-  useEffect(() => {
-    getRecommendData()
-  },[]) //沒有依賴陣列,表掛載時執行一次 //如[]內有變數則再執行一次(當routeId變化時重新執行)
+  // 處理付款方式變更
+  const handlePaymentChange = (label) => {
+    setSelectedPayment(label) // 更新選中的付款方式
+  };
+  
 
   const GoToStep3 = () => {
-    navigate('/cart/${routeId}/step3') 
-  }
-  const BackToCart =() => {
-    navigate(`/cart/${routeId}`)
+    
+    const handleCheckout = order.map(item =>
+      item.id === Number(orderId) ? { ...item, payment: selectedPayment } : item
+    );
+    console.log('Selected Payment:', selectedPayment)
+    console.log('Order ID:', orderId)
+
+    setOrder(handleCheckout)
+    navigate(`/cart/step3?{orderId}=${orderId}`)
   }
 
+  const BackToCart =() => {
+    navigate(`/cart?ticketId=${orderId}`)
+  }
 
 
   if (!event) return <div>loading...</div>
@@ -74,7 +89,6 @@ const Step2 = () => {
         </div>
       </div>
 
-
         <div className="viewPage w-[75%] ml-[3%]">
           <div className="couponCode-container inline-block w-[710px]">
             <div className="couponCode-discount mb-[28px] bg-white">
@@ -91,9 +105,6 @@ const Step2 = () => {
                 <span className='detail-label'>付款金額</span>
                 <span className='detail-amount'>$350</span>
               </div>
-              <span className="OrderDetail-toggle">
-                + 查看訂單細項
-              </span>
             </div>
             <div className="OrderDetail-detail"></div>
           </div>
@@ -102,62 +113,50 @@ const Step2 = () => {
             <div className="Payment-type-group">
               <div className="Payment-group-heading">
                 <div className="flex items-center">
-                  <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_online.png'} alt="" />
+                  <img className='max-w-[45px]' src='https://static.accupass.com/frontend/image/payment/payicon_online.png' alt="" />
                   <div className="payment-left">線上付款</div>
                 </div>
               </div>
-              <div className="Payment-wrap">
-                <div className="flex items-center cursor-pointer">
-                  <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_allpaycreditcard.png'} alt="" />
-                  <div className="payment-left">信用卡 - VISA / Master Card / JCB</div>
-                  <img className='Payment-icon-checked' src={PaymentIconChecked} alt="" />
+              {paymentOptions.slice(0,3).map((item) => (
+                <div key={item.value}>
+                  <div className={`Payment-wrap ${selectedPayment === item.label ? 'selected' : ''}`} onClick={() => handlePaymentChange(item.label)}>
+                    <div className="flex items-center cursor-pointer">
+                      <img className='max-w-[45px]' src={item.icon} alt="" />
+                      <div className="payment-left">{item.label}</div>
+                      {selectedPayment === item.label && (
+                        <img className="Payment-icon-checked" src={PaymentIconChecked} alt="" />
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="Payment-wrap">
-                <div className="flex items-center cursor-pointer">
-                  <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_linepay.png'} alt="" />
-                  <div className="payment-left">LINE PAY</div>
-                  <img className='Payment-icon-checked' src={PaymentIconChecked} alt="" />
-                </div>
-              </div>
-              <div className="Payment-wrap">
-                <div className="flex items-center cursor-pointer">
-                  <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_jkopay.png'} alt="" />
-                  <div className="payment-left">街口支付</div>
-                  <img className='Payment-icon-checked' src={PaymentIconChecked} alt="" />
-                </div>
-              </div>
+              ))}
             </div>
             <div className="Payment-type-group">
               <div className="Payment-group-heading">
                 <div className="flex items-center">
-                  <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_offline.png'} alt="" />
+                  <img className='max-w-[45px]' src='https://static.accupass.com/frontend/image/payment/payicon_offline.png' alt="" />
                   <div className="payment-left">線下付款</div>
                 </div>
               </div>
-              <div className="Payment-wrap">
-                <div className="flex items-center cursor-pointer">
-                  <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_chainstore.png'} alt="" />
-                  <div className="payment-left">超商代碼 - 全家 FamiPort</div>
-                  <img className='Payment-icon-checked' src={PaymentIconChecked} alt="" />
+              {paymentOptions.slice(3).map((item) => (
+                <div key={item.value} className={`Payment-wrap ${selectedPayment === item.label ? 'selected' : ''}`} onClick={() => handlePaymentChange(item.label)}>
+                  <div className="flex items-center cursor-pointer">
+                    <img className='max-w-[45px]' src={item.icon} alt="" />
+                    <div className="payment-left">超商代碼 - 全家 FamiPort</div>
+                    {selectedPayment === item.label && <img className='Payment-icon-checked' src={PaymentIconChecked} alt="" />}
+                  </div>
                 </div>
-              </div>
-              <div className="Payment-wrap">
-                <div className="flex items-center cursor-pointer">
-                  <img className='max-w-[45px]' src={'https://static.accupass.com/frontend/image/payment/payicon_virtualaccount.png'} alt="" />
-                  <div className="payment-left">ATM轉帳 - 國泰世華銀行</div>
-                  <img className='Payment-icon-checked' src={PaymentIconChecked} alt="" />
-                </div>
-              </div>
+               ))}
             </div>
+            
           </div>
           <div className="Checkout-buttons-container flex mt-[20px]">
             <button className='Checkout-pre-btn' onClick={BackToCart}>上一步</button>
-            <button className='Checkout-next-btn' onClick={GoToStep3}>前往付款</button>
+            <button className='Checkout-next-btn'onClick={GoToStep3 } >前往取票</button>
           </div>
-          </div>
+        </div>
       </div>          
-      </div>
+    </div>
   )
 }
 

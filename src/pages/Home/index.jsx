@@ -1,74 +1,76 @@
 import EventCard from "@/components/EventCard"
 import ArticleCard from "@/components/ArticleCard"
+import BannerCard from "@/components/BannerCard"
 import TabNav from "@/components/TabNav" 
 import mockTabs from "@/mock/data/tabs.json" 
 
 import { Carousel } from 'antd'
 import { useState, useEffect } from 'react'
 import { homeApi } from "@/api/home"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { useUserStore } from '@/store/user'
-import clsx from 'clsx'
+import clsx from 'clsx' //darkMode
 
 const Home = () => {
-  const { t } = useTranslation(); // 解構賦值出 t 函數 {t('xxx')}
+  const { t } = useTranslation() // 解構賦值出 t 函數 {t('xxx')}
   const navigate = useNavigate()
   const { darkMode } = useUserStore()
   
   const [recommendData, setRecommendData] = useState([])
   const [articleData, setArticleData] = useState([])
+  const [bannerData, setBannerData] = useState([])
   const [tabs,setTabs] = useState([]) 
   
   const getRecommendData = async() => {
     const { data } = await homeApi.getRecommend()
-    console.log(data);
     setRecommendData(data)
   }
   const getArticleData = async() => {
     const { data } = await homeApi.getArticle()
-    console.log(data);
     setArticleData(data)
   }
-  
+  const getBannerData = async() => {
+    const { data } = await homeApi.getRecommend()
+    console.log(data)
+    setBannerData(data)
+  }
+
+
   useEffect(() => {
     getRecommendData()
     getArticleData()
+    getBannerData()
     setTabs(mockTabs)  
   }, [])
   
-  // const { tab } = useParams 
-  // const [activeTab, setActiveTab] = useState(tab || 'featured')
-  // useEffect(() =>{
-  //   setActiveTab(tab)
-  // },[tab])
-  // const changeTab = (tab) => {
-  //   navigate(`/home/${tab}`)
-  // }
 
   return (
     <div className={clsx("main pt-[122px]", { darkMode }) }>
       <TabNav tabs={tabs} /> 
+      {/* 之後再教TabNav */}
       {/* <TabNav activeTab={activeTab} onChangeTab={changeTab} />
       {activeTab === 'featured' && <div>精選內容</div>}
       {activeTab === 'learning' && <div>學習內容</div>}
       {activeTab === 'art' && <div>藝文內容</div>}
       {activeTab === 'experience' && <div>體驗內容</div>} */}
 
-      <div className="carousel-container">
+      <div className="carousel-container cursor-pointer">
         <Carousel autoplay={true} arrows className="mt-[10px] mb-[14px]">
-          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2501130700035819570130.jpg" alt=""/>
-          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2502280334271731164846.jpg" alt=""/>
-          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2405021014411727419914.jpg" alt=""/>
-          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2412181038211880693273.jpg" alt=""/>
-          <img className="object-contain rounded-[16px]" src="https://static.accupass.com/eventbanner/2501211525081715725743.jpg" alt=""/>
+          {bannerData.filter(item => item.category === 'banner').map((item) =>(
+            <BannerCard
+              key={item.id} 
+              image={item.image}
+              onGoToPage={()=> navigate(`/event/${item.id}`)}
+            />
+          ))}
         </Carousel>   
       </div>
       <div className="container max-w-[1080px]">
 
         <div className="themes-wrap">
           <h2 className="theme-title">{t('hot_recommends')}</h2>
-          <div className="flex flex-wrap gap-x-[30px] gap-y-[16px] whitespace-nowrap">
+          <div className="theme flex flex-wrap gap-x-[30px] gap-y-[16px] whitespace-nowrap">
             {recommendData.filter(item => item.category === 'recommend').map((item) =>(
             <EventCard
               key={item.id} 

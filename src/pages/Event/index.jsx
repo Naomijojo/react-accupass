@@ -10,6 +10,8 @@ import { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
 import { useNavigate } from 'react-router-dom';
 import { useTicketStore } from '@/store/ticket'
+import { formatDate } from '@/utills/time'
+
 
 
 const Event = () => {
@@ -47,9 +49,9 @@ const Event = () => {
                <div className="event-banner-bg min-w-[540px] rounded-[16px_16px_0_0]">
                   <img src={event.image} alt="" />
                </div>
-               <div className="event-detail flex bg-[#FFF]">
+               <div className="event-detail flex bg-[#fff] rounded-[0_0_16px_16px] ">
                   <main className="event-detail-content max-w-[calc(100%-300px)]">
-                     <section className="event-basicInfo-container">
+                     <section className="event-basicInfo-container rounded-[0_0_0_16px]">
                         <div className="event-header-container mt-[10px] mb-[24px]" >
                            <h1 className="event-title"> {event.title} </h1>
                            <div className="event-popularity-layout flex items-center">
@@ -69,7 +71,7 @@ const Event = () => {
                            <div className="event-subtitle-container flex mt-[10px]">
                               <img src={EventClockIcon} className="event-subtitle-icon" />
                               <div className="event-subtitle-content ml-[10px] leading-[24px]">
-                                 <div className="event-subtitle">{event.time}
+                                 <div className="event-subtitle">{formatDate(event.time)}
                                     <a href="https://calendar.google.com/calendar/u/0/r/eventedit?sf=true&output=xml&sprop=name:Accupass&sprop=website:https://www.accupass.com&text=2025%E7%B2%89%E7%B4%85%E7%91%9C%E7%8F%88&dates=20250308T073000Z/20250309T090000Z&location=%E5%8F%B0%E7%81%A3%E5%8F%B0%E5%8C%97%E5%B8%82%E4%BF%A1%E7%BE%A9%E5%8D%80%E5%BF%A0%E5%AD%9D%E6%9D%B1%E8%B7%AF%E4%BA%94%E6%AE%B58%E8%99%9F&details=%E6%B4%BB%E5%8B%95%E5%90%8D%E7%A8%B1%EF%BC%9A2025%E7%B2%89%E7%B4%85%E7%91%9C%E7%8F%88%0A%E6%B4%BB%E5%8B%95%E7%B6%B2%E5%9D%80%EF%BC%9Ahttps://www.accupass.com/event/2501120956491666733158?utm_campaign%3Daccu_theme&utm_medium=home_north&utm_source=Web" target="_blank" className="event-calendar-link inline-block ml-[15px]">
                                     加入行事曆
                                     </a>  
@@ -134,5 +136,6 @@ const Event = () => {
             </div>
          </div>      
       </div> 
-   )};  
+   )
+};  
 export default Event

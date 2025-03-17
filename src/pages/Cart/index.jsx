@@ -2,68 +2,71 @@ import NoticeIcon from '@/assets/images/common/noticeCard/noticeCard-icon.svg'
 
 import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
-import { useParams } from "react-router-dom"
-import { useNavigate } from 'react-router-dom'
-// import { useCartStore } from '@/store/cart'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useCartStore, } from '@/store/cart'
+import { areaOptions } from '@/utills/constants'
+
+const genders = [ '不公開', '男性', '女性' ]
 
 
 const Cart = () => {
-  const params = useParams() //動態參數params
-  const routeId = Number(params.id) //轉換成數字
-  const [ event, setEvent ] = useState(null)
   const navigate = useNavigate()
-  const [isChecked, setIsChecked] = useState(false)
-  // const { cart, setCart } = useCartStore
- 
-  // 根據 id 從 recommendData 中抓取資料
-  const getRecommendData = async() => {
-    const { data: events } = await homeApi.getRecommend()
-    const detail = events.find(item => item.id === routeId)
-    setEvent(detail)
-  }
-  useEffect(() => {
-    getRecommendData()
-  },[]) //沒有依賴陣列,表掛載時執行一次 //如[]內有變數則再執行一次(當routeId變化時重新執行)
+  const [ searchParams ] = useSearchParams()
+  const ticketId = searchParams.get('ticketId')
+  // console.log('ticketId',ticketId) //  /cart?ticketId=1   1不是數字是字串
+  // const [ event, setEvent] = useState(null)
+  const [ isChecked, setIsChecked ] = useState(false) //預設打勾為不點擊狀態
+  const { cart, order, setOrder } = useCartStore()
 
-  
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked)
-  }
-
-  //用state控制必填選項 
-  // const [nameInputValue, setNameInputValue] = useState()
-  // const [emailInputValue, setEmailInputValue] = useState()
-  // const [phoneInputValue, setPhoneInputValue] = useState()
-  // const [selectedGender, setSelectedGender] = useState()
-  // const [formErrors, setFormErrors] = useState({ name: false, email: false, phone: false, gender: false })
-  //   const GoToStep2 = () => {
-  //     const errors = {
-  //       name: !nameInputValue,
-  //       email: !emailInputValue,
-  //       phone: !phoneInputValue,
-  //       gender: !selectedGender
-  //     }
-  //     setFormErrors(errors)
-  //       if (!Object.values(errors).includes(true)) {
-  //         navigate(`/cart/${routeId}/step2`)
-  //       }
-  //   }
-
-  const GoToStep2 = () => {
-    if (isChecked){
-      navigate(`/cart/${routeId}/step2`) 
+  const getEventData = async () => {
+    const { data } = await homeApi.getRecommend()
+    const detail = data.find(item => item.id === routeId) 
+    if(detail){
+      setEvent(detail) 
     }
   }
 
-  const BackToTicket = () => {
-    navigate(`/ticket/${routeId}`)
+  // 存個人資料狀態到cart並用useCartStore
+  const [name, setName] = useState()
+  const [email, setEmail] = useState()
+  const [areaNumber,setAreaNumber] = useState(0)
+  const [phone, setPhone] = useState()
+  const [selectedGender, setSelectedGender] = useState('不公開')
+  const [disabled, setDisabled] = useState(true)
+
+  const GoToStep2 = () => {
+    // 1.拿取使用user資訊
+    const userInfo = { name, email, phone:`(+${areaNumber})${phone}`, genders: selectedGender }
+    // 2.拿取購物車商品 + 總價 => 加入訂單 (在CartStore裡面)
+    const orderid = Date.now()
+    const newOrder = {
+      id: orderid,
+      userInfo,
+      cart
+    }
+    console.log(newOrder)
+    
+    setOrder([ ...order, newOrder])
+    navigate(`/cart/step2?${orderid}=${orderid}`)
   }
+
+    const handleCheckboxChange = () => {
+      setIsChecked(!isChecked)
+  }
+
+
+  const BackToTicket = () => {
+    navigate(`/ticket/${ticketId}`)
+  }
+
+  useEffect(() =>{
+    setDisabled(!isChecked || !name || !phone || !email)
+  }, [name, email, areaNumber, phone, isChecked])
 
   
   
-  if (!event) return <div>loading...</div>
+  if (!event) return <div>loading...</div>  
   return (
-    // <CartHeader ={xxx}> 要設定為當前步驟
     <div className="pt-[108px]" style={{ backgroundColor: '#eff4fb' }}>
       <div className="cartPage flex w-[1080px] min-h-[calc(100vh-120px)] ">
         <div className="event-info-wrapper inline-block w-[25%]">
@@ -111,47 +114,40 @@ const Cart = () => {
             <div className="registration-form-items">
               <div className={"form-field"}>
                 <div className="field-label"><span className='field-required'>*</span>姓名</div>
-                <input type="text" step={'1'} maxLength={'1000'}  />
-                {/* {formErrors.name && <div className="error-message">必填</div>} */}
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)}  maxLength={'1000'} />
               </div>
               <div className={"form-field"}>
                 <div className="field-label"><span className='field-required'>*</span>電子郵件</div>
-                <input type="text" step={'1'} maxLength={'1000'} />
-                {/* {formErrors.name && <div className="error-message">必填</div>} */}
+                <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={'1000'}/>
               </div>
               <div className={"form-field"}>
                 <div className="field-label"><span className='field-required'>*</span>行動電話</div>
                 <div className="field-container flex flex-row">
-                  <select className='Select country-select w-[30%] mr-[12px]' name="" id="" >
-                    <option value="">請選擇</option>
-                    <option value="886">台灣 +886</option>
-                    <option value="81">日本 +81</option>
-                    <option value="82">南韓 +82</option>
-                    <option value="82">新加坡 +65</option>
-                    <option value="82">美國 +1</option>
-                    <option value="82">澳洲 +61</option>
+                  <select className='Select country-select w-[30%] mr-[12px]' value={areaNumber} onChange={(e) => setAreaNumber(e.target.value)}>
+                    <option>請選擇</option>
+                    {areaOptions.map(item => (
+                      <option key={item.value} value={item.value}>{item.label}</option>
+                    ))}
                   </select>
-                  <input className='flex-1' type="text" step={'1'} maxLength={'50'}/>
+                  <input className='flex-1' type="text"  maxLength={'50'} value={phone} onChange={(e) => setPhone(e.target.value)}/>
                 </div>
-                  {/* {formErrors.name && <div className="error-message">必填</div>} */}
               </div>
               <div className={"form-field"}>
                 <div className="field-label"><span className='field-required'>*</span>性別</div>
                 <div className="radioButton-box flex flex-col" >
-                  <label className="radioButton-normal bolck mb-[16px]">
-                    <i className='radioButton-btn'></i>
-                    <span className="radioButton-text">不公開</span>
-                  </label>
-                  <label className="radioButton-normal bolck mb-[16px]" >
-                    <i className='radioButton-btn'></i>
-                    <span className="radioButton-text">男性</span>
-                  </label>
-                  <label className="radioButton-normal bolck mb-[16px]" >
-                    <i className='radioButton-btn'></i>
-                    <span className="radioButton-text">女性</span>
-                  </label>
+
+                  {genders.map(item =>(
+                    <label key={item} className="radioButton-normal bolck mb-[16px]" onClick={() => setSelectedGender(item)}>
+                      {item === selectedGender ? (
+                        <i className="fa-solid fa-circle-dot" style={{color: '#00a8fb'}}></i>
+                      ) : (
+                        <i className="fa-solid fa-circle" style={{color: '#e2e2e2'}}></i>
+                      )}
+                      <span className="radioButton-text">{item}</span>
+                    </label>
+                  ))}
+
                 </div>
-                {/* {formErrors.name && <div className="error-message">必填</div>} */}
               </div>
               
             </div>
@@ -164,8 +160,9 @@ const Cart = () => {
           </div>
           <div className="registration-buttons flex">
             <button className='prev-btn' onClick={BackToTicket}>重新報名</button>
-            <button className={`next-btn ${isChecked ? '' : 'disabled'}`} disabled={!isChecked} onClick={GoToStep2}>下一步</button>
+            <button className={`next-btn ${disabled ? 'disabled': ''}`} disabled={disabled} onClick={GoToStep2}>下一步</button>
           </div>
+         
           {/* {isModalOpen && (
             <div className="Modal">
               <div className="Modal-container relative">
@@ -182,6 +179,7 @@ const Cart = () => {
               </div>
             </div>
           )} */}
+
         </div>
       </div>
     </div>

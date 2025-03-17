@@ -102,7 +102,7 @@ select {
 }
 .darkMode,
 .darkMode .tags-counts{ 
-  background-color: #33485a ;
+  background-color: #33485a !important;
 }
 .darkMode .tab-list-container,
 .darkMode .footer{
@@ -117,4 +117,11 @@ select {
 .card-event-location:hover span{
     filter: brightness(0.75); 
 }
-
+.darkMode .event-detail,
+.darkMode .event-basicInfo-container{
+  background-color: #e5e7eb ;
+}
+.darkMode .event-info-container,
+.darkMode  .org-info{
+  background-color: #fafafb;
+}
