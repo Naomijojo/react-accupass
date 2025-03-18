@@ -7,40 +7,53 @@ import { useCartStore, } from '@/store/cart'
 import { paymentOptions } from '@/utills/payments'
 // import { Dropdown } from 'antd';
 
-  // 付款方式狀態
-  // const [creditCard, setCreditCard] = useState(true)
-  // const [linePay, setLinePay] = useState()
-  // const [street,setStreet] = useState(0)
-  // const [famiPort, setFamiPort] = useState()
-  // const [atm, setAtm] = useState()
-  // const [disabled, setDisabled] = useState(true)
+  
 
 const Step2 = () => {
   const navigate = useNavigate()
   const [ searchParams ] = useSearchParams()
   const orderId = searchParams.get('orderId')
   const { order, setOrder } = useCartStore()  
-  
-  //   ->1.拿取payment資料  ->2.payment完成後用find把order拿過來
-  // 管理當前選中的付款方式
+  const { totalPrice } = useCartStore() // 把Ticket頁的totalPrice抓過來
+
+  // 管理當前選中的付款方式 先預設為信用卡
   const [selectedPayment, setSelectedPayment] = useState(paymentOptions[0].label)
+
+  // 先新增付款方式狀態
+  const [creditCard, setCreditCard] = useState(true)
+  const [linePay, setLinePay] = useState(false)
+  const [street,setStreet] = useState(false)
+  const [famiPort, setFamiPort] = useState(false)
+  const [atm, setAtm] = useState(false)
+
 
   // 處理付款方式變更
   const handlePaymentChange = (label) => {
     setSelectedPayment(label) // 更新選中的付款方式
-  };
   
-
+  // 根據選中的付款方式更新狀態
+  setCreditCard(label === '信用卡')
+  setLinePay(label === 'Line Pay')
+  setStreet(label === '街口支付')
+  setFamiPort(label === '全家 FamiPort')
+  setAtm(label === 'ATM')
+  
+}
   const GoToStep3 = () => {
-    
-    const handleCheckout = order.map(item =>
-      item.id === Number(orderId) ? { ...item, payment: selectedPayment } : item
-    );
-    console.log('Selected Payment:', selectedPayment)
-    console.log('Order ID:', orderId)
+    // 1.把payment資料更新加入訂單中
+    const paymentInfo = { creditCard, linePay, street, famiPort, atm }
+    // 2. 從orderid找當筆訂單 newOrder就會有paymentInfo資料 
+    const orderid = order.find( item => item.id === Number(orderId)? {...item, paymentInfo }: item)
+    const newOrder = {
+      id: orderid,
+      paymentInfo,
+    }
+    console.log(newOrder)
+    // 3.把舊訂單展開放進新訂單資料
+    setOrder([ ...order, newOrder])
 
-    setOrder(handleCheckout)
-    navigate(`/cart/step3?{orderId}=${orderId}`)
+    // 4.到step3取票
+    navigate(`/cart/step3?orderId=${orderId}`)
   }
 
   const BackToCart =() => {
@@ -103,7 +116,7 @@ const Step2 = () => {
             <div className="OrderDetail-headline flex">
               <div>
                 <span className='detail-label'>付款金額</span>
-                <span className='detail-amount'>$350</span>
+                <span className='detail-amount'>{totalPrice}</span>
               </div>
             </div>
             <div className="OrderDetail-detail"></div>

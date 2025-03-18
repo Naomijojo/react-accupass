@@ -17,7 +17,7 @@ const Ticket = () => {
   const [ totalQty, setTotalQty] = useState(0)
   const navigate = useNavigate()
   const { cart, setCart } = useCartStore() 
-
+  const { setTotalPrice: setGlobalTotalPrice } = useCartStore() // 把totalPrice變成全局狀態 才能在step2頁面抓總金額
 
   // ** 解構賦值後都抓不到tickets的資料 都變成undefiend 但是data都有資料 
   const getEventData = async () => {
@@ -26,11 +26,8 @@ const Ticket = () => {
     
     if(detail){
       setEvent(detail) //這裡將 detail（找到的活動資料）設置為 event 的值。
-      setTickets(detail.tickets?.map(item => ({ ...item, qty: 0 })) ?? []);
+      setTickets(detail.tickets?.map(item => ({ ...item, qty: 0 })) ?? [])
       // setTickets(detail.tickets || []) //如果 detail.tickets 存在，則將其設置為 tickets 的值；如果 detail.tickets 是 undefined 或 null，則使用空陣列 ([]) 作為預設值。
-      // ?. = 如果 detail.tickets 是 undefined 或 null，則 detail.tickets?.map 會回傳 undefined，而不會拋出錯誤。
-      // ?? = 如果 detail.tickets?.map 回傳 undefined，則使用空陣列 ([]) 作為預設值。
-      // map = 對 detail.tickets 中的每個 item 進行處理，添加 qty 屬性並設置初始值為 0。
     }
   }
   
@@ -47,8 +44,8 @@ const Ticket = () => {
         item.id === id ? { ...item, qty: Math.max((item.qty || 0) - 1, 0) } : item ))
   }
   
-  const handleAddToCart = () => {
-    // 1.先過濾只傳遞/加入數量 >0 的數據
+  const handleAddToCart = () => {   //點立即購票後 localstorage就會出現cart的key cart內資料會顯示剛剛選的張數資料 填完個資後點擊下一步到step2 cart的order會出現userInfo資料
+    // 1.先過濾只傳遞/加入數量 >0 的數據 
     const newCart = tickets.filter(item => item.qty > 0 )
     // 2.過濾完加進『全局狀態』更新 (沒後端暫存localstorage)
     setCart([...cart, ...newCart]) //把原本的...cart拿過來 再把...newCart展開丟進去 本地端能看到tickets資料被帶過來 表示Ticket加入購物車成功
@@ -58,7 +55,7 @@ const Ticket = () => {
 
 
   useEffect(() => {
-    getEventData();
+    getEventData()
   }, []) 
 
   useEffect(() => {
@@ -67,8 +64,9 @@ const Ticket = () => {
     const qtySum = tickets.reduce((prev, item) => prev + item.qty, 0)
     const priceSum = tickets.reduce((prev, item) => prev + item.price * item.qty, 0)
     setTotalPrice(priceSum)
+    setGlobalTotalPrice(priceSum)
     setTotalQty(qtySum) 
-  }, [tickets]); // []內有變數表依賴tickets變化時執行
+  }, [tickets]) // []內有變數表依賴tickets變化時執行
 
 
 

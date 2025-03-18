@@ -26,7 +26,7 @@ const Cart = () => {
     }
   }
 
-  // 存個人資料狀態到cart並用useCartStore
+  // 存取個人資料狀態
   const [name, setName] = useState()
   const [email, setEmail] = useState()
   const [areaNumber,setAreaNumber] = useState(0)
@@ -42,7 +42,7 @@ const Cart = () => {
     const newOrder = {
       id: orderid,
       userInfo,
-      cart
+      cart,
     }
     console.log(newOrder)
     
