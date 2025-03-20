@@ -9,11 +9,11 @@ const router = createBrowserRouter([
     children: [
       { 
         path: "/",
-        element: <Home /> 
+        element: < Home /> 
       },
       {
         path: "/event/:id", 
-        element: <Event /> 
+        element: < Event /> 
       },
       {
         path:"/search",

@@ -37,7 +37,7 @@ const Cart = () => {
   const GoToStep2 = () => {
     // 1.拿取使用user資訊
     const userInfo = { name, email, phone:`(+${areaNumber})${phone}`, genders: selectedGender }
-    // 2.拿取購物車商品 + 總價 => 加入訂單 (在CartStore裡面)
+    // 2.拿取購物車商品 + 總價 => 加入訂單 (會在CartStore裡面的cart)
     const orderid = Date.now()
     const newOrder = {
       id: orderid,

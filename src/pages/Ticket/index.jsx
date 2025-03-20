@@ -27,7 +27,7 @@ const Ticket = () => {
     if(detail){
       setEvent(detail) //這裡將 detail（找到的活動資料）設置為 event 的值。
       setTickets(detail.tickets?.map(item => ({ ...item, qty: 0 })) ?? [])
-      // setTickets(detail.tickets || []) //如果 detail.tickets 存在，則將其設置為 tickets 的值；如果 detail.tickets 是 undefined 或 null，則使用空陣列 ([]) 作為預設值。
+      // setTickets(detail.tickets || []) //如果 detail.tickets 存在，則將其設置為 tickets 的值；如果 detail.tickets 是 undefined 或 null，則使用空陣列[]作為預設值。
     }
   }
   
