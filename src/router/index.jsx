@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from '@/components/Layout'
-import { Home, Event, NotFound, Search, Ticket, Cart, Step2, Step3 } from '@/pages';
+import { Home, Event, NotFound, Search, Ticket, FillOrder, Payment, GetTicket, Map} from '@/pages';
 
 const router = createBrowserRouter([
   {
@@ -9,31 +9,35 @@ const router = createBrowserRouter([
     children: [
       { 
         path: "/",
-        element: < Home /> 
+        element: <Home /> 
       },
       {
         path: "/event/:id", 
-        element: < Event /> 
+        element: <Event /> 
       },
       {
         path:"/search",
-        element: < Search />
+        element: <Search />
       },
       {
         path:"/ticket/:id",
-        element: < Ticket />
+        element: <Ticket />
       },
       {
-        path:"/cart",
-        element: < Cart />
+        path:"/fillOrder",
+        element: <FillOrder />
       },
       {
-        path:"/cart/step2",
-        element: < Step2 />
+        path:"/fillOrder/payment",
+        element: <Payment />
       },
       {
-        path:"/cart/step3",
-        element: < Step3 />
+        path:"/fillOrder/getTicket",
+        element: <GetTicket />
+      },
+      { 
+        path: "/map/:id",
+        element: <Map /> 
       },
       {
         path: "*",

@@ -1,17 +1,34 @@
 import NoticeIcon from '@/assets/images/common/noticeCard/noticeCard-icon.svg'
 
-
-import { useNavigate } from 'react-router-dom'
-
-
-
-const Step4 = () => {
-  const navigate = useNavigate()
+import { homeApi } from "@/api/home"
+import { useState, useEffect } from 'react'
+// import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
+import { useCartStore, } from '@/store/cart'
 
 
+const GetTicket = () => {
+  // const navigate = useNavigate()
+  const [ searchParams ] = useSearchParams()
+  const ticketId = searchParams.get('ticketId')
+  const orderId = searchParams.get('orderId')
 
+  const { cart } = useCartStore() //獲取購物車數據
+
+  const [ event, setEvent] = useState(null) 
+  const getRecommendData = async () => {
+    const { data } = await homeApi.getRecommend()
+    const detail = data.find(item => item.id === Number(ticketId))
+
+    if(detail){
+      setEvent(detail) 
+    }
+  }
+  useEffect(() => {
+    getRecommendData()
+  },[])
   
-  
+  if (!event) return <div>loading...</div>
   return (
     <div className="pt-[108px]" style={{ backgroundColor: '#eff4fb' }}>
       <div className="cartPage flex w-[1080px] min-h-[calc(100vh-120px)] ">
@@ -59,18 +76,26 @@ const Step4 = () => {
           <div className="OrderDetail-headline flex">
             <span className='detail-label'>票券明細</span>
             <span className="OrderDetail-toggle">
-              + 查看訂單細項
+                + 查看訂單細項
             </span>
           </div>
-          <div className="OrderDetail-detail"></div>
+          <div className="OrderDetail-detail">
+            {cart.map((item, index) => (
+              <div key={index}  className="OrderDetail-item block">
+                <div className="OrderDetail-headline flex ">
+                  <span className="item-time">{item.time}</span>
+                  <span className="item-title">{item.title}</span>
+                  <span className="item-price">{item.price}</span>
+                </div>
+              </div>
+            ))}
+
+          </div>
         </div>
-        <div className="OrderDetail-headline flex">1</div>
-        <div className="OrderDetail-headline flex">2</div>
-        <div className="OrderDetail-headline flex">3</div>
       </div>
       </div>          
     </div>
   )
 }
 
-export default Step4
+export default GetTicket

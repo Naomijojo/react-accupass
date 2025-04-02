@@ -1,65 +1,58 @@
 import NoticeIcon from '@/assets/images/common/noticeCard/noticeCard-icon.svg'
 import PaymentIconChecked from '@/assets/images/common/payment-icon-checked.svg'
 
+import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useCartStore, } from '@/store/cart'
+import { useCartStore } from '@/store/cart'
 import { paymentOptions } from '@/utills/payments'
-// import { Dropdown } from 'antd';
+
 
   
 
-const Step2 = () => {
+const Payment = () => {
   const navigate = useNavigate()
   const [ searchParams ] = useSearchParams()
+  const ticketId = searchParams.get('ticketId')
   const orderId = searchParams.get('orderId')
-  const { order, setOrder } = useCartStore()  
-  const { totalPrice } = useCartStore() // 把Ticket頁的totalPrice抓過來
+  const { orders, setOrders, cart } = useCartStore()  // 儲存訂單資料
+  const [ event, setEvent] = useState(null)   // 儲存活動資料
 
-  // 管理當前選中的付款方式 先預設為信用卡
+  // 管理當前選中的付款方式 預設為信用卡
   const [selectedPayment, setSelectedPayment] = useState(paymentOptions[0].label)
 
-  // 先新增付款方式狀態
-  const [creditCard, setCreditCard] = useState(true)
-  const [linePay, setLinePay] = useState(false)
-  const [street,setStreet] = useState(false)
-  const [famiPort, setFamiPort] = useState(false)
-  const [atm, setAtm] = useState(false)
+  // 獲取活動詳細資料
+  const getRecommendData = async () => {
+    const { data } = await homeApi.getRecommend()
+    const detail = data.find(item => item.id === Number(ticketId))
 
-
-  // 處理付款方式變更
-  const handlePaymentChange = (label) => {
-    setSelectedPayment(label) // 更新選中的付款方式
-  
-  // 根據選中的付款方式更新狀態
-  setCreditCard(label === '信用卡')
-  setLinePay(label === 'Line Pay')
-  setStreet(label === '街口支付')
-  setFamiPort(label === '全家 FamiPort')
-  setAtm(label === 'ATM')
-  
-}
-  const GoToStep3 = () => {
-    // 1.把payment資料更新加入訂單中
-    const paymentInfo = { creditCard, linePay, street, famiPort, atm }
-    // 2. 從orderid找當筆訂單 newOrder就會有paymentInfo資料 
-    const orderid = order.find( item => item.id === Number(orderId)? {...item, paymentInfo }: item)
-    const newOrder = {
-      id: orderid,
-      paymentInfo,
+    if(detail){
+      setEvent(detail) 
     }
-    console.log(newOrder)
-    // 3.把舊訂單展開放進新訂單資料
-    setOrder([ ...order, newOrder])
+  }
+  
+  const handleCheckout = () => {
+    // map   修改指定的訂單並加上付款方式 且要用Number轉為數字
+    const newOrders = orders.map(item => {
+      if(item.id === Number(orderId)){ 
+        return{ ...item, payment: selectedPayment}
+      }
+      return item
+    })
+    setOrders(newOrders)
 
-    // 4.到step3取票
-    navigate(`/cart/step3?orderId=${orderId}`)
+    // 4.取票
+    navigate(`/fillOrder/getTicket?ticketId=${ticketId}&?orderId=${orderId}`)
   }
 
-  const BackToCart =() => {
-    navigate(`/cart?ticketId=${orderId}`)
+  const BackToFillOrder =() => {
+    navigate(`/fillOrder?ticketId=${ticketId}`)
   }
 
+  // 組件加載獲取活動數據
+  useEffect(() => {
+    getRecommendData()
+  },[])
 
   if (!event) return <div>loading...</div>
   return (
@@ -116,7 +109,7 @@ const Step2 = () => {
             <div className="OrderDetail-headline flex">
               <div>
                 <span className='detail-label'>付款金額</span>
-                <span className='detail-amount'>{totalPrice}</span>
+                <span className='detail-amount'>{cart.reduce((prev, item) => prev + item.price * item.qty, 0)}</span>
               </div>
             </div>
             <div className="OrderDetail-detail"></div>
@@ -130,9 +123,9 @@ const Step2 = () => {
                   <div className="payment-left">線上付款</div>
                 </div>
               </div>
-              {paymentOptions.slice(0,3).map((item) => (
+              {paymentOptions.filter(item => item.type === 'online').map((item) => (
                 <div key={item.value}>
-                  <div className={`Payment-wrap ${selectedPayment === item.label ? 'selected' : ''}`} onClick={() => handlePaymentChange(item.label)}>
+                  <div className={`Payment-wrap ${selectedPayment === item.label ? 'selected' : ''}`} onClick={() => setSelectedPayment(item.label)}>
                     <div className="flex items-center cursor-pointer">
                       <img className='max-w-[45px]' src={item.icon} alt="" />
                       <div className="payment-left">{item.label}</div>
@@ -151,8 +144,8 @@ const Step2 = () => {
                   <div className="payment-left">線下付款</div>
                 </div>
               </div>
-              {paymentOptions.slice(3).map((item) => (
-                <div key={item.value} className={`Payment-wrap ${selectedPayment === item.label ? 'selected' : ''}`} onClick={() => handlePaymentChange(item.label)}>
+              {paymentOptions.filter(item => item.type === 'offline').map((item) => (
+                <div key={item.value} className={`Payment-wrap ${selectedPayment === item.label ? 'selected' : ''}`} onClick={() => setSelectedPayment(item.label)}>
                   <div className="flex items-center cursor-pointer">
                     <img className='max-w-[45px]' src={item.icon} alt="" />
                     <div className="payment-left">超商代碼 - 全家 FamiPort</div>
@@ -164,8 +157,8 @@ const Step2 = () => {
             
           </div>
           <div className="Checkout-buttons-container flex mt-[20px]">
-            <button className='Checkout-pre-btn' onClick={BackToCart}>上一步</button>
-            <button className='Checkout-next-btn'onClick={GoToStep3 } >前往取票</button>
+            <button className='Checkout-pre-btn' onClick={BackToFillOrder}>上一步</button>
+            <button className='Checkout-next-btn'onClick={handleCheckout} >前往取票</button>
           </div>
         </div>
       </div>          
@@ -173,4 +166,4 @@ const Step2 = () => {
   )
 }
 
-export default Step2
+export default Payment

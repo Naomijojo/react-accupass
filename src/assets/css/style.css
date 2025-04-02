@@ -104,6 +104,13 @@ a{
     padding-right: 5px;
     cursor: pointer;
 }
+.menu-icon-container i {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .header-icon{
     cursor: pointer;
     width: 20px;
@@ -120,9 +127,6 @@ a{
     padding: 0 5px;
     cursor: pointer;
     transition: all 0.2s;
-}
-.header-menu-burger{
-    background-image: url(../images/common/icon-header-menu.svg);
 }
 .header-icon-globe{
     margin-right: 6px;
@@ -780,14 +784,22 @@ a{
     display: flex;
     align-items: center;
 }
-.event-external-link:hover{
-    color: #00aaf5;
+.event-external-link a{
+    color: #ffffff;
+    font-weight: 400;
+    background-color: #00aaf5;
+    box-shadow: 0px 2px 4px rgba(0, 170, 245, .3);
+}
+.event-external-link:hover a{
+    background-color: #0088d2;
+    box-shadow: 0px 2px 4px rgba(0, 170, 245, .3);
+    color: #ffffff;
 }
 .event-external-link:active{
     color: #959ba1;
 }
 .event-external-link:hover img{
-    filter: brightness(0) saturate(100%) invert(49%) sepia(94%) saturate(1581%) hue-rotate(164deg) brightness(95%) contrast(104%)
+    filter: brightness(300%) contrast(100%);
 }
 .event-external-link .event-icon-link{
     width: 16px;
@@ -1074,9 +1086,9 @@ a{
     bottom: 0;
     width: 100%;
     padding: 10px 0;
-    background-color: #fff;
     box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, .05);
     transition: height .3s;
+    background-color: rgb(239, 244, 251);
 }
 .ticketSelect-confirm-button{
     width: 1080px;
@@ -1341,7 +1353,7 @@ select::-ms-expand {
 
 
 
-/* cart/Step2 */
+/* cart/payment */
 .couponCode-discount-headline{
     margin-bottom: 10px;
     font-size: 16px;
@@ -1495,7 +1507,22 @@ select::-ms-expand {
     color: #00a2f2;
 }
 
+/* map */
+.map-container{
+    margin: 0 auto;
+    max-width: 1080px;
+}
+.map-btn{
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease;
+}
+.bg-pink-300:hover {
+    background-color: rgba(255, 105, 180, 0.8); 
+}
 
+.bg-blue-400:hover {
+background-color: rgba(0, 123, 255, 0.8); 
+}
 /*---------------------------*\
            Footer
 \*---------------------------*/

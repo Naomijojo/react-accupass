@@ -7,19 +7,15 @@ import EventIconTags from "@/assets/images/common/event-icon-tags.svg"
 
 import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
-import { useParams } from "react-router-dom"
-import { useNavigate } from 'react-router-dom';
-import { useTicketStore } from '@/store/ticket'
+import { useParams, useNavigate, Link } from "react-router-dom"
 import { formatDate } from '@/utills/time'
-
 
 
 const Event = () => {
    const params = useParams() //動態參數params
-   const routeId = Number(params.id) //轉換成數字
+   const routeId = Number(params.id) //params轉換成數字
    const [ event, setEvent ] = useState(null)
    const navigate = useNavigate()
-   const { setTicket } = useTicketStore()
  
    // 根據 id 從 recommendData 中抓取資料
    const getRecommendData = async() => {
@@ -33,13 +29,8 @@ const Event = () => {
 
    
    const handleTicket = (item) => {
-      setTicket([item])
       navigate(`/ticket/${item.id}`) 
    }
-   
-   
-   
-   
    
    if (!event) return <div>loading...</div> 
    return (
@@ -81,12 +72,13 @@ const Event = () => {
                            <div className="event-subtitle-container flex mt-[10px]">
                               <img src={EventLocationIcon} className="event-subtitle-icon" />
                               <div className="event-subtitle-content ml-[10px]">
-                                 <a href="https://www.google.com/maps/search/?api=1&query=%E5%8F%B0%E7%81%A3%E5%8F%B0%E5%8C%97%E5%B8%82%E4%BF%A1%E7%BE%A9%E5%8D%80%E5%BF%A0%E5%AD%9D%E6%9D%B1%E8%B7%AF%E4%BA%94%E6%AE%B58%E8%99%9F" target="_blank">
-                                    <div className="event-external-link flex items-center">{event.address}
-                                       <img className="ml-1 event-icon-link"  src={EventIconLink} alt="" />
-                                    </div>
-                                    <p className="event-address-remark text-[#b5bac1]" >{event.addressRemark}</p>
-                                 </a>
+                                 <div className="event-external-link flex items-center">{event.address}
+                                    <Link to={`/map/${routeId}`} className="ml-3 px-2 p-[2px] flex items-center border border-solid border-blue-400 rounded-md">
+                                       查看位置
+                                       <img className="ml-2 event-icon-link"  src={EventIconLink} alt="EventIconLink" />
+                                    </Link>
+                                 </div>
+                                 <p className="event-address-remark text-[#b5bac1]" >{event.addressRemark}</p>
                               </div>
                            </div>
                            <div className="event-subtitle-container event-tags-container flex items-center mt-[10px] ">

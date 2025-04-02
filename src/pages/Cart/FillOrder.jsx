@@ -2,29 +2,35 @@ import NoticeIcon from '@/assets/images/common/noticeCard/noticeCard-icon.svg'
 
 import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useCartStore, } from '@/store/cart'
+import { useNavigate, useSearchParams} from 'react-router-dom'
+import { useCartStore } from '@/store/cart'
 import { areaOptions } from '@/utills/constants'
 
 const genders = [ '不公開', '男性', '女性' ]
 
 
-const Cart = () => {
+const FillOrder = () => {
+  // const params = useParams() // 動態參數params
+  // const routeId = Number(params.id) // 轉換成數字
   const navigate = useNavigate()
-  const [ searchParams ] = useSearchParams()
-  const ticketId = searchParams.get('ticketId')
+  const [ searchParams ] = useSearchParams()     // []陣列方式拿URL中的參數
+  const ticketId = searchParams.get('ticketId')  // 獲取ticketId參數
   // console.log('ticketId',ticketId) //  /cart?ticketId=1   1不是數字是字串
-  // const [ event, setEvent] = useState(null)
-  const [ isChecked, setIsChecked ] = useState(false) //預設打勾為不點擊狀態
-  const { cart, order, setOrder } = useCartStore()
+  
+  const [ event, setEvent] = useState(null)   // 儲存活動資料
+  const [ isChecked, setIsChecked ] = useState(false) // 預設打勾為不點擊狀態
+  const { cart, orders, setOrders } = useCartStore()
 
-  const getEventData = async () => {
+  // 獲取活動詳細資料
+  const getRecommendData = async () => {
     const { data } = await homeApi.getRecommend()
-    const detail = data.find(item => item.id === routeId) 
+    const detail = data.find(item => item.id === Number(ticketId))
+
     if(detail){
       setEvent(detail) 
     }
   }
+  
 
   // 存取個人資料狀態
   const [name, setName] = useState()
@@ -34,38 +40,45 @@ const Cart = () => {
   const [selectedGender, setSelectedGender] = useState('不公開')
   const [disabled, setDisabled] = useState(true)
 
-  const GoToStep2 = () => {
+  const GoToPayment = () => {
     // 1.拿取使用user資訊
     const userInfo = { name, email, phone:`(+${areaNumber})${phone}`, genders: selectedGender }
     // 2.拿取購物車商品 + 總價 => 加入訂單 (會在CartStore裡面的cart)
-    const orderid = Date.now()
+    const orderId = Date.now()
     const newOrder = {
-      id: orderid,
+      id: orderId,
       userInfo,
       cart,
     }
     console.log(newOrder)
     
-    setOrder([ ...order, newOrder])
-    navigate(`/cart/step2?${orderid}=${orderid}`)
+    setOrders([ ...orders, newOrder])
+    navigate(`/fillOrder/payment?ticketId=${ticketId}&?orderId=${orderId}`)
+
+
   }
 
     const handleCheckboxChange = () => {
       setIsChecked(!isChecked)
-  }
+    }
 
+    const BackToTicket = () => {
+      navigate(`/ticket/${ticketId}`)
+    }
 
-  const BackToTicket = () => {
-    navigate(`/ticket/${ticketId}`)
-  }
+    // 組件加載獲取活動數據
+    useEffect(() => {
+      getRecommendData()
+    },[])
 
-  useEffect(() =>{
-    setDisabled(!isChecked || !name || !phone || !email)
-  }, [name, email, areaNumber, phone, isChecked])
+    // 表單輸入或勾選發生變化時 更新按鈕的禁用狀態
+    useEffect(() =>{
+      setDisabled(!isChecked || !name || !phone || !email)
+    }, [name, email, areaNumber, phone, isChecked])
 
   
   
-  if (!event) return <div>loading...</div>  
+    if (!event) return <div>loading...</div>  
   return (
     <div className="pt-[108px]" style={{ backgroundColor: '#eff4fb' }}>
       <div className="cartPage flex w-[1080px] min-h-[calc(100vh-120px)] ">
@@ -160,7 +173,7 @@ const Cart = () => {
           </div>
           <div className="registration-buttons flex">
             <button className='prev-btn' onClick={BackToTicket}>重新報名</button>
-            <button className={`next-btn ${disabled ? 'disabled': ''}`} disabled={disabled} onClick={GoToStep2}>下一步</button>
+            <button className={`next-btn ${disabled ? 'disabled': ''}`} disabled={disabled} onClick={GoToPayment}>下一步</button>
           </div>
          
           {/* {isModalOpen && (
@@ -185,4 +198,4 @@ const Cart = () => {
     </div>
   );
 };  
-export default Cart;
+export default FillOrder;

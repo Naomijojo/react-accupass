@@ -9,8 +9,8 @@ const CartHeader = () => {
   // 根據路徑判斷當前步驟
   const getCurrentStep = () => {
     const path = location.pathname;
-    if (path.includes('step2')) return 3;
-    if (path.includes('step3')) return 4;
+    if (path.includes('payment')) return 3;
+    if (path.includes('getTicket')) return 4;
     // if (path.includes('step4')) return 5;
     return 2; // 預設為 cart 頁
   };

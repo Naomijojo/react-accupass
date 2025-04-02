@@ -10,7 +10,7 @@ import clsx from 'clsx'
 
 //useState管理狀態/ useEffect處理狀態 / useSearchParams讀取和設置 URL 查詢參數(先在router設定好才抓的到) 
 
-// 1.引用 getRecommend API: 在 getAllData 函數中，使用 homeApi.getRecommend() 獲取推薦數據，並將其賦值給 recommendData
+// 1.引用 getRecommend API: 在 getAllData 函數中，使用 homeApi.getRecommend() 獲取推薦數據，並將其賦值給recommendData
 // 2.過濾數據 : 查詢參數 tag 和 location 對 recommendData 進行過濾
 // 3.渲染結果 : 根據過濾後的 searchData 渲染結果。如果沒有相關活動，顯示提示消息；如果有活動，則顯示活動的標題。
 
@@ -49,7 +49,7 @@ const Search = () => {
 
   const { darkMode } = useUserStore()
 
-  //查詢字串
+  // 查詢字串'l'、 'q'
   const location = searchParams.get('l')
   const tag = searchParams.get('q')
   console.log(`location ${location}`)  
@@ -76,7 +76,7 @@ const Search = () => {
     getAllData();
   }, []);
   
-  //重複代碼包在一起並命名為addSearchHistory
+  // 更新localStorage、更新React狀態：重複代碼包在一起並賦質給addSearchHistory
   const addSearchHistory = (newSearchHistory) => {
     localStorage.setItem('searchHistory', JSON.stringify(newSearchHistory))
     setSearchHistory(newSearchHistory)
