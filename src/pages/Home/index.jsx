@@ -48,7 +48,7 @@ const Home = () => {
   return (
     <div className={clsx("main pt-[122px]", { darkMode }) }>
       <TabNav tabs={tabs} /> 
-      {/* 之後再教TabNav */}
+      {/* TabNav */}
       {/* <TabNav activeTab={activeTab} onChangeTab={changeTab} />
       {activeTab === 'featured' && <div>精選內容</div>}
       {activeTab === 'learning' && <div>學習內容</div>}

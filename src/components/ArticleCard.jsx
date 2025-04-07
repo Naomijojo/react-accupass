@@ -6,7 +6,7 @@ const ArticleCard = ({ image, title }) => {
       </div>
       <div className="article-card-content flex">
           <a href="#!" >
-              <p className="article-card-name">{title}</p>
+            <p className="article-card-name">{title}</p>
           </a>
       </div>
     </div>
