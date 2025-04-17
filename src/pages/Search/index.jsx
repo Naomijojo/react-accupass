@@ -32,20 +32,20 @@ const sortOptions = [
 
 const Search = () => {
   //使用useSearchParams查詢參數
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams()
   //searchData:搜尋到的資料
-  const [searchData, setSearchData] = useState([]);
+  const [searchData, setSearchData] = useState([])
   //isSearchClick:是否點擊搜尋
-  const [isSearchClick, setIsSearchClick] = useState(false);
+  const [isSearchClick, setIsSearchClick] = useState(false)
   //searchHistory:搜尋紀錄
-  const [searchHistory, setSearchHistory] = useState([]);
+  const [searchHistory, setSearchHistory] = useState([])
   //allData:所有資料
-  const [allData, setAllData] = useState([]);
+  const [allData, setAllData] = useState([])
   //input的值
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState('')
   const searchRef = useRef(null)
 
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
 
   const { darkMode } = useUserStore()
 
@@ -122,6 +122,8 @@ const Search = () => {
       document.removeEventListener('click', handleClickOutside )
     }
   },[])
+
+  // 排序(由舊到新 由新到舊)
   const handleSort = (value) => {
     const newSearchData = [...searchData] //排序:先複製一份再將時間拿出來比大小
     if (value === 'asc'){

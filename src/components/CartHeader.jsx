@@ -11,8 +11,7 @@ const CartHeader = () => {
     const path = location.pathname;
     if (path.includes('payment')) return 3;
     if (path.includes('getTicket')) return 4;
-    // if (path.includes('step4')) return 5;
-    return 2; // 預設為 cart 頁
+    return 2; // 預設為 FillOrder 頁面
   };
 
   const currentStep = getCurrentStep();

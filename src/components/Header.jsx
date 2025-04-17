@@ -196,7 +196,7 @@ const Header = () => {
             </div>
             <div className="header-inner-right flex items-center">
               <div className="header-search-input-container">
-                <div className="header-keyword-container mr-3">
+                <div className="header-keyword-container mr-3" onClick={() => navigate('/search?')}>
                   <span className="header-keyword">{t('search_activities')}</span>
                   <span className="header-keyword-icon">
                     <i className="fa-solid fa-magnifying-glass cursor-pointer" style={{color: '#e5e7eb'}}></i>
