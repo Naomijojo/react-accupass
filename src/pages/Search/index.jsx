@@ -1,8 +1,8 @@
 import { homeApi } from "@/api/home"
 import { useState, useEffect, useRef } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import EventCard from "@/components/EventCard"
-import FilterhIcon from "@/assets/images/common/icon-search-filterbtn.svg"
+import FilterIcon from "@/assets/images/common/icon-search-filterbtn.svg"
 import IconSearchHistory from "@/assets/images/common/icon-search-history.svg"
 import { useTranslation } from "react-i18next"
 import { useUserStore } from '@/store/user'
@@ -31,6 +31,8 @@ const sortOptions = [
 
 
 const Search = () => {
+  const navigate = useNavigate()
+
   //使用useSearchParams查詢參數
   const [searchParams] = useSearchParams()
   //searchData:搜尋到的資料
@@ -165,7 +167,7 @@ const Search = () => {
                 <input type="search" placeholder={t('keywords')} maxLength={80} value={value} onChange={(e) => setValue(e.target.value)}
                 onClick={() => setIsSearchClick(true)}  
                 onKeyDown={handleKeyDown} />
-                <img src={FilterhIcon} alt="" className="search-icon" />
+                <img src={FilterIcon} alt="" className="search-icon" />
                 {isSearchClick && (
                   //{searchRef} 要放在父元素上
                   <div className="absolute w-full top-full rounded-[16px] shadow-[4px_9px_25px_rgba(59,63,69,0.15)] z-10 bg-white p-6">
@@ -227,6 +229,7 @@ const Search = () => {
                   title={item.title}
                   location={item.location}
                   tag={item.tag}
+                  onGoToPage={()=> navigate(`/event/${item.id}`)}
               />
             ))}
           </div>

@@ -9,14 +9,15 @@ import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from "react-router-dom"
 import { formatDate } from '@/utills/time'
-
+import { useUserStore } from "@/store/user"
 
 const Event = () => {
    const params = useParams() //動態參數params
    const routeId = Number(params.id) //params轉換成數字
    const [ event, setEvent ] = useState(null)
    const navigate = useNavigate()
- 
+   const { token, setIsModalOpen } = useUserStore()
+
    // 根據 id 從 recommendData 中抓取資料
    const getRecommendData = async() => {
       const { data: events } = await homeApi.getRecommend()
@@ -29,7 +30,11 @@ const Event = () => {
 
    
    const handleTicket = (item) => {
-      navigate(`/ticket/${item.id}`) 
+      if (token) {                        //如果有token,就跳轉到報名頁面
+         navigate(`/ticket/${item.id}`) 
+      } else {
+         setIsModalOpen(true)           //如果沒有token,就打開登入彈窗
+      }
    }
    
    if (!event) return <div>loading...</div> 

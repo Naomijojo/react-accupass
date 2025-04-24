@@ -1,6 +1,12 @@
 {
   "login": "登入",
   "register":"註冊",
+  "UserName": "使用者名稱",
+  "password": "密碼",
+  "forgot_password": "忘記密碼",
+  "email": "電子郵件",
+  "backToLogin":"想起密碼了? 前往登入",
+  "sentMail": "寄送驗證信",
   "user": "使用者",
   "UserTickets": "我的票券",
   "UserPage": "我的頁面",

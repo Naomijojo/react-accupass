@@ -111,6 +111,7 @@ select {
 .darkMode .card,
 .darkMode .article-card{
   border: 0.5px solid #e5e7eb ;
+  background-color: #33485a;
 }
 
 .card-event-location:hover i,
@@ -172,4 +173,72 @@ select {
 }
 .custom-header-drawer .Header-drawer-item ul li {
   margin-bottom: 8px;
+}
+
+/* login Modal */
+.custom-loginModal .ant-modal-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 40px 30px;
+  width: 310px;
+} 
+.custom-loginModal .ant-modal-header{
+  padding: 0 30px 20px;
+  margin: 0;
+}
+.custom-loginModal .ant-modal-title{
+  font-size: 20px;
+  color: #757575;
+}
+.custom-loginModal .ant-modal-body{
+  width:  100%;
+}
+.custom-loginModal .ant-modal-body input{
+  position: relative;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 32px;
+  max-width: 100%;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  font-size: 14px;
+  padding: 5px 8px 5px 30px;
+  box-shadow: inset 0 1px 2px rgba(10, 10, 10, .1);
+  appearance: none;
+  background-color: #e7ecf3;
+}
+.custom-loginModal .input-container {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+.custom-loginModal .icon {
+  position: absolute;
+  top: 5px; 
+  left: 10px; 
+}
+.custom-loginModal .ant-modal-footer{
+  width: 100%;
+  margin-top: 30px;
+}
+.custom-loginModal .ant-btn-primary{
+  width: 100%;
+  padding: 6px 11px;
+  margin-bottom: 10px;
+  background-color: #2ab3fc;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 3px;
+  border-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+  transition: all .2s;
 }

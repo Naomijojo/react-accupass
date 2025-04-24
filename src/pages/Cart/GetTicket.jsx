@@ -2,16 +2,16 @@ import NoticeIcon from '@/assets/images/common/noticeCard/noticeCard-icon.svg'
 
 import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
-// import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useCartStore, } from '@/store/cart'
 
 
 const GetTicket = () => {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const [ searchParams ] = useSearchParams()
   const ticketId = searchParams.get('ticketId')
   const orderId = searchParams.get('orderId')
+
 
   const { cart } = useCartStore() //獲取購物車數據
 
@@ -89,7 +89,9 @@ const GetTicket = () => {
                 </div>
               </div>
             ))}
-
+          </div>
+          <div className="Checkout-buttons-container flex justify-end mt-[20px]">
+            <button className='Checkout-next-btn' onClick={() => navigate('/')}>查看更多活動</button>
           </div>
         </div>
       </div>

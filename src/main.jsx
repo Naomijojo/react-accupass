@@ -4,6 +4,7 @@ import App from "./App.jsx"
 import "@/assets/css/index.css"
 import '@/mock/index.js';
 import '@/i18n'
+import '@ant-design/v5-patch-for-react-19';
 
 //入口頁面
 createRoot(document.getElementById("root")).render(
