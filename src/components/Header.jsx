@@ -306,7 +306,6 @@ const Header = () => {
                   <div>
                     {token ? (
                       <Dropdown menu={{ items: loginItems }} trigger={['click']}>
-                        {/* <button className="header-auth-herf" style={{ cursor: 'pointer' }}> {t('user')} </button> */}
                         <button className="header-auth-herf" style={{ cursor: 'pointer' }}> {userInfo.firstName} </button>
                       </Dropdown>
                       ) : (
