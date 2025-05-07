@@ -79,9 +79,6 @@ const Map = () => {
   
   
   if (!isLoaded || !event) return <Loading />
-  // if (!event) return <div><Loading /></div>
-
-  // if (!isLoaded && !event) return <div>loading...</div> 
   return (
     <div className="map-container pt-[50px] max-w-[1080px]">
       <div className="flex border border-solid border-gray-400 mt-12">
