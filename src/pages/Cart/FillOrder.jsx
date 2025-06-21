@@ -4,6 +4,7 @@ import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams} from 'react-router-dom'
 import { useCartStore } from '@/store/cart'
+import { formatDate } from '@/utills/time'
 import { areaOptions } from '@/utills/constants'
 
 const genders = [ '不公開', '男性', '女性' ]
@@ -81,17 +82,17 @@ const FillOrder = () => {
     if (!event) return <div>loading...</div>  
   return (
     <div className="pt-[108px]" style={{ backgroundColor: '#eff4fb' }}>
-      <div className="cartPage flex w-[1080px] min-h-[calc(100vh-120px)] ">
-        <div className="event-info-wrapper inline-block w-[25%]">
-          <img className="mb-[24px]" src={event.image} alt="" />
+      <div className="cartPage flex flex-col lgx:flex-row w-full  min-h-[calc(100vh-120px)]">
+        <div className="event-info-wrapper w-full mb-6 lg:w-[25%] lg:mb-0">
+          <img className="mb-[24px] hidden lgx:block" src={event.image} alt="" />
           <div className="event-info-timer">
-            {/* timer-tick需要網頁倒數功能 用settimeout? */}
+
             <span className='timer-tick'>20:00</span>
             <span className='timer-description'>為確保您的權益，未完成訂單將自動取消</span>
           </div>
           <div className="event-info-content">
             <p className="event-info-itemName mb-[20px]">{event.title}</p>
-            <p className="event-info-itemTime mb-[5px]">{event.time}</p>
+            <p className="event-info-itemTime mb-[5px]">{formatDate(event.time)}</p>
             <p className="event-info-itemAddress mb-[5px]">{event.address}</p>
             <div className="mt-[24px]">
               <div className="notice-card flex flex-col items-start gap-2">
@@ -119,7 +120,7 @@ const FillOrder = () => {
             </div>
           </div>
         </div>
-        <div className="RegistrationPage-registration">
+        <div className="RegistrationPage-registration w-full lg:ml-[3%] lg:flex-1">
           <div className="registration-headline">填寫參加人資訊
             <p className='registration-headline-des'>報名資料將用於主辦單位安排活動，活動票券相關資訊將寄至訂購人信箱，如需修改電郵地址請至 <a href="">帳號管理</a></p>
           </div>

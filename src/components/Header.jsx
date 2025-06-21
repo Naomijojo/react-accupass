@@ -109,7 +109,7 @@ const Header = () => {
     }))
   }
 
- // - 登出  就將setToken變成空字串即可 + userInfo也要變成空物件
+ // - 登出  就將setToken變成空字串 + userInfo也要變成空物件
  const logout = () => {
   setToken('')
   setUserInfo({})    
@@ -257,8 +257,8 @@ const Header = () => {
   return (
     <>
       <div className={clsx("header-wrapper", { darkMode }) }>
-        <header className="header-bar">
-          <div className="header-container text-[14px]">
+        <header className="header-bar ">
+          <div className="header-container">
             <nav className="header-inner flex justify-between items-center">
               <div className="header-inner-left flex items-center">
                 <div className="menu-icon-container flex justify-center items-center">
@@ -292,16 +292,16 @@ const Header = () => {
                     </span>
                   </div>
                 </div>
-                <div className="header-auth-container flex ml-[2px]">
+                <div className="header-auth-container ml-[2px] flex items-center">
 
                   <Dropdown menu={languageMenu}>
-                    <div className='cursor-pointer'>
+                    <div className='cursor-pointer hidden lg:flex items-center'>
                       <span className='mr-1'>{t('language')}</span>
-                      <i className="fa-solid fa-caret-down fa-sm" style={{color:'#e5e7eb'}}></i>
+                      <i className="fa-solid fa-caret-down fa-sm align-middle" style={{color:'#e5e7eb'}}></i>
                     </div>
                   </Dropdown>
 
-                  <p className="header-swich" onClick={ () => setDarkMode(!darkMode) }>{t('mode')}</p>
+                  <p className="header-swich hidden lg:flex items-center" onClick={ () => setDarkMode(!darkMode) }>{t('mode')}</p>
 
                   <div>
                     {token ? (
@@ -313,7 +313,7 @@ const Header = () => {
                     )}
                   </div>
                 </div>
-                <div className="header-caret-event-button-container">
+                <div className="header-caret-event-button-container hidden lg:flex items-center">
                   <div>
                     <span className='cursor-pointer'>{t('organize_activities')}</span>
                   </div>
@@ -370,7 +370,11 @@ const Header = () => {
                 style={{ cursor: 'pointer', position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', color: '#8f8b8b' }}
               ></i>
             </div>
-            <div className='text-end flex justify-end text-sky-400' onClick={handleForgotPassword}>{t('forgot_password')}</div>
+            <div 
+              className='text-end flex justify-end text-sky-400'
+              style ={{ cursor: 'pointer' }} 
+              onClick={handleForgotPassword}>{t('forgot_password')}
+            </div>
           </>
         ) : (
           <>
@@ -387,7 +391,7 @@ const Header = () => {
             placeholder='abc123@gamil.com' 
             onChange={(e) => setEmail(e.target.value)}
             onKeyDown={handleKeyDown}/>  
-            <div className='text-end flex justify-end text-sky-400' onClick={BackToLogin}>{t('backToLogin')}</div>
+            <div className='text-end flex justify-end text-sky-400' style ={{ cursor: 'pointer' }} onClick={BackToLogin}>{t('backToLogin')} </div>
           </>
         )}
       </Modal>

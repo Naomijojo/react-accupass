@@ -107,15 +107,19 @@ const Search = () => {
     setValue('')
   }
 
-  //要使用useEffect 抓取dom元素 (何時拿？組件掛載完時拿 且只會拿一次)
-  //加入監聽器 
+  // 要使用useEffect 抓取 DOM 元素 (何時拿？組件掛載完時拿 且只會拿一次)
+  // 如果 searchRef 綁定成功，而且點擊的位置不在 searchRef DOM 範圍內，就代表點到外部 → 關閉搜尋框
+   
   useEffect(() =>{
     const handleClickOutside = (event) => {
-    //確認是否拿取整個searchRef 是就會是true &&(同時) 點擊的目標不在searchRef裡 就要讓setIsSearchClick為false
-    if (searchRef.current && !searchRef.current.contains(event.target)){
+    if (searchRef.current && !searchRef.current.contains(event.target)){   
+      // searchRef.current → 綁定DOM的元素(搜尋框區塊)
+      // !searchRef.current.contains(event.target) → event.target(滑鼠點擊區域)不在搜尋框內部
+      // 以上兩個條件都要成立才會執行
       setIsSearchClick(false)
     }      
   }
+    //加入監聽器
     document.addEventListener('click', handleClickOutside )
     //組件卸載(換頁 關閉頁面)的時候執行“移除監聽”
     //卸載:react 是 CSR(client side render)
@@ -220,7 +224,7 @@ const Search = () => {
           {!searchData.length ? (
             <p className="search-results text-center m-52">{t('no_activities')}</p>
           ) : (
-          <div className="flex flex-wrap gap-x-[30px] gap-y-[16px]">
+          <div className="flex justify-center flex-wrap gap-x-[30px] gap-y-[16px]">
             {searchData.map(item => (
               <EventCard
                   key={item.id}

@@ -5,6 +5,7 @@ import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useCartStore } from '@/store/cart'
+import { formatDate } from '@/utills/time'
 import { paymentOptions } from '@/utills/payments'
 
 
@@ -57,16 +58,16 @@ const Payment = () => {
   if (!event) return <div>loading...</div>
   return (
     <div className="pt-[108px]" style={{ backgroundColor: '#eff4fb' }}>
-      <div className="cartPage flex w-[1080px] min-h-[calc(100vh-120px)] ">
-      <div className="event-info-wrapper inline-block w-[25%]">
-        <img className="mb-[24px]" src={event.image} alt="" />
+      <div className="cartPage flex flex-col lgx:flex-row w-full  min-h-[calc(100vh-120px)]">
+      <div className="event-info-wrapper w-full mb-6 lg:w-[25%] lg:mb-0">
+        <img className="mb-[24px] hidden lgx:block" src={event.image} alt="" />
         <div className="event-info-timer">
           <span className='timer-tick'>20:00</span>
           <span className='timer-description'>為確保您的權益，未完成訂單將自動取消</span>
         </div>
         <div className="event-info-content">
           <p className="event-info-itemName mb-[20px]">{event.title}</p>
-          <p className="event-info-itemTime mb-[5px]">{event.time}</p>
+          <p className="event-info-itemTime mb-[5px]">{formatDate(event.time)}</p>
           <p className="event-info-itemAddress mb-[5px]">{event.address}</p>
           <div className="mt-[24px]">
             <div className="notice-card flex flex-col items-start gap-2">
@@ -95,7 +96,7 @@ const Payment = () => {
         </div>
       </div>
 
-        <div className="viewPage w-[75%] ml-[3%]">
+        <div className="viewPage w-full lg:ml-[3%] lg:flex-1">
           <div className="couponCode-container inline-block w-[710px]">
             <div className="couponCode-discount mb-[28px] bg-white">
               <div className="couponCode-discount-headline">請輸入優惠代碼</div>
@@ -156,7 +157,7 @@ const Payment = () => {
             </div>
             
           </div>
-          <div className="Checkout-buttons-container flex mt-[20px]">
+          <div className="Checkout-buttons-container flex justify-center lg:flex-1 mt-[20px]">
             <button className='Checkout-pre-btn' onClick={BackToFillOrder}>上一步</button>
             <button className='Checkout-next-btn'onClick={handleCheckout} >前往取票</button>
           </div>

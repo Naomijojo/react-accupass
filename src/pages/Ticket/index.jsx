@@ -35,7 +35,8 @@ const Ticket = () => {
     // prevTickets prev表示拿取上一個函數來更新
     // 用map拿出來 三元條件是:如果item.id === id 就修改當前qty每次都+1 如果不等於就回傳本來的item 
     setTickets((prevTickets) => 
-      prevTickets.map((item) => item.id === id ? { ...item, qty: (item.qty||0) + 1  } : item ))
+      prevTickets.map((item) => 
+        item.id === id ? { ...item, qty: (item.qty || 0) + 1  } : item ))
   }
   const removeQty = (id) => {
     setTickets((prevTickets) => 
@@ -76,9 +77,9 @@ const Ticket = () => {
   
   return (
     <div className="pt-[50px]"  style={{ backgroundColor: '#eff4fb' }}>
-      <div className="ticketPage flex w-[1080px] min-h-[calc(100vh-120px)]">
-        <div className="event-info-wrapper inline-block w-[25%]">
-          <img className="mb-[24px]" src={event.image} alt="" />
+      <div className="ticketPage flex flex-col lgx:flex-row w-full  min-h-[calc(100vh-120px)]">
+        <div className="event-info-wrapper w-full mb-6 lg:w-[25%] lg:mb-0">
+          <img className="mb-[24px] hidden lgx:block" src={event.image} alt="" />
           <div className="event-info-content">
             <p className="event-info-itemName mb-[20px]">{event.title}</p>
             <p className="event-info-itemTime mb-[5px]">{formatDate(event.time)}</p>
@@ -109,7 +110,7 @@ const Ticket = () => {
             </div>
           </div>
         </div>
-        <div className="ticketSelect-container inline-block ml-[3%] flex-1">
+        <div className="ticketSelect-container w-full lg:ml-[3%] lg:flex-1">
           <div className="ticketSelect-info min-h-[calc(100vh-303px)]">
             <h1 className="info-headline text-[14px] font-weight: 700 mb-2" style={{color:'#797979'}}>請選擇票券</h1>
             
@@ -148,13 +149,13 @@ const Ticket = () => {
         </div>
         
       </div>
-      <div className="ticketSelect-bottom-container sticky flex justify-center">
+      <div className="ticketSelect-bottom-container sticky  flex justify-center">
         <div className="ticketSelect-bottom-item flex flex-col items-end w-[1080px]">
           <span className="ticketSelect-ticket-number">
             <span >{totalQty}張，</span>
             <span >NT${totalPrice}</span>
           </span>
-          <button className="ticketSelect-confirm-button h-[40px]"  onClick={handleAddToCart} >立即購票</button>
+          <button className="ticketSelect-confirm-button w-full max-w-[1024px] h-[40px]"  onClick={handleAddToCart} >立即購票</button>
         </div>
       </div>
     </div>

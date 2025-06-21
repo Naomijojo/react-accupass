@@ -184,6 +184,11 @@ a{
     overflow: hidden;
     white-space: nowrap;
 }
+@media (max-width: 768px) {
+    .header-keyword{
+        display: none;
+    }
+}
 .header-keyword:before {
     display: inline-block;
     content: "|";
@@ -485,7 +490,7 @@ a{
     margin: 0 auto;
 }
 
-/* ---themes   wrap--- */
+/* ---themes --- */
 .themes-wrap{
     width: 100%;
     margin-top: 14px;
@@ -500,18 +505,20 @@ a{
     padding: 14px 0 16px;
 }
 @media (max-width:1024px){
-    .themes-wrap{
-        padding-left: 3vw;
-    }
     .themes-wrap .theme{
         gap: 18px 12px;
         overflow-x: scroll;
         overflow-y: hidden;
-        padding: 24px 16px 10px 0;
+        padding: 24px 16px 10px ;
         margin: -24px 0 -10px;
     }
     .themes-wrap .theme-title{
         font-size: 20px;
+    }
+    .theme-title,
+    .article-title{
+        font-size: 20px;
+        padding-left: 3vw;
     }
 }
 /*-------------------------------------*\
@@ -525,6 +532,13 @@ a{
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
     transition: transform 0.5s, box-shadow 0.5s;
     background-color: #fff;
+    flex-shrink: 0;
+}
+@media (max-width:640px) {
+    .card{
+        width: 428px;
+        height: 366px;
+    }    
 }
 .card:hover{
     transform: translateY(-4px);
@@ -635,8 +649,8 @@ a{
     width: 100%;
 }
 .article-card{
-    width: 201px;
-    height: 265px;
+    /* width: 201px;
+    height: 265px; */
     border-radius: 16px; 
     overflow: hidden;
     cursor: pointer;
@@ -648,8 +662,8 @@ a{
     box-shadow: 0px 10px 35px rgba(0, 0, 0, .06) 
 }
 .article-card-image{
-    width: 201px; 
-    height: 201px; 
+    /* width: 201px; 
+    height: 201px;  */
     overflow: hidden;
     transition: transform 0.5s ease;
 }
@@ -745,12 +759,18 @@ a{
     margin-right: 12px;
 }
 .event-info-timer .timer-description{
+    width: 100%;
+    max-width: 130px;
     display: inline-block;
     vertical-align: middle;
-    width: 130px;
     font-size: 12px;
     font-weight: 600;
     text-align: left;
+}
+@media (max-width:1024px) {
+    .event-info-timer .timer-description{
+        max-width: 220px;
+    }    
 }
 .event-subtitle-icon{
     display: inline-block;
@@ -1086,13 +1106,13 @@ a{
 .ticketSelect-bottom-container{
     bottom: 0;
     width: 100%;
-    padding: 10px 0;
+    padding: 10px ;
     box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, .05);
     transition: height .3s;
     background-color: rgb(239, 244, 251);
 }
 .ticketSelect-confirm-button{
-    width: 1080px;
+    margin: 0 auto;
     height: initial;
     background-color: #2ea4f2;
     color: #fff;

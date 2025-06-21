@@ -46,7 +46,7 @@ const Event = () => {
                   <img src={event.image} alt="" />
                </div>
                <div className="event-detail flex bg-[#fff] rounded-[0_0_16px_16px] ">
-                  <main className="event-detail-content max-w-[calc(100%-300px)]">
+                  <main className="event-detail-content md:max-w-[calc(100%-45px)] max-w-[calc(100%-300px)] ">
                      <section className="event-basicInfo-container rounded-[0_0_0_16px]">
                         <div className="event-header-container mt-[10px] mb-[24px]" >
                            <h1 className="event-title"> {event.title} </h1>

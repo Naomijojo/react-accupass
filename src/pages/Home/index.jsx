@@ -66,11 +66,11 @@ const Home = () => {
           ))}
         </Carousel>   
       </div>
-      <div className="container max-w-[1080px]">
+      <div className="container max-w-[1080px] mx-auto">
 
         <div className="themes-wrap">
           <h2 className="theme-title">{t('hot_recommends')}</h2>
-          <div className="theme flex flex-wrap gap-x-[30px] gap-y-[16px] whitespace-nowrap">
+          <div className="theme flex gap-x-[30px] gap-y-[16px] overflow-x-auto overflow-y-hidden lg:flex-wrap lg:overflow-visible">
             {recommendData.filter(item => item.category === 'recommend').map((item) =>(
             <EventCard
               key={item.id} 
@@ -85,9 +85,9 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="article-wrap">
+        <div className="article-wrap w-full">
           <h2 className="article-title">{t('fresh_news')}</h2>
-          <div className="flex justify-between gap-x-[20px] whitespace-nowrap">
+          <div className="article-list flex flex-nowrap gap-x-[20px] overflow-x-auto overflow-y-hidden lg:flex-nowrap lg:overflow-visible px-4 py-6 lg:px-0 lg:py-0">
             {articleData.filter(item => item.category === 'news-1').map((item) =>(
             <ArticleCard
               key={item.id}
@@ -100,7 +100,7 @@ const Home = () => {
 
         <div className="themes-wrap">
           <h2 className="theme-title">{t('featured_events')}</h2>
-          <div className="flex flex-wrap gap-x-[30px] gap-y-[16px] whitespace-nowrap">
+          <div className="theme flex gap-x-[30px] gap-y-[16px] overflow-x-auto overflow-y-hidden lg:flex-wrap lg:overflow-visible">
             {recommendData.filter(item => item.category === 'featured-1').map((item) =>(
             <EventCard
               key={item.id} 
@@ -117,22 +117,22 @@ const Home = () => {
           </div>
         </div>
             
-        <div className="article-wrap">
+        <div className="article-wrap w-full">
           <h2 className="article-title">{t('fresh_news')}</h2>
-          <div className="flex justify-between gap-x-[20px] whitespace-nowrap">
+          <div className="article-list flex flex-nowrap gap-x-[20px] overflow-x-auto overflow-y-hidden lg:flex-nowrap lg:overflow-visible -mx-4 px-4">
             {articleData.filter(item => item.category === 'news-2').map((item) =>(
-              <ArticleCard
-                key={item.id}
-                image={item.image}
-                title={item.title}
-              />
+            <ArticleCard
+              key={item.id}
+              image={item.image}
+              title={item.title}
+            />
             ))}
           </div>
         </div>
 
         <div className="themes-wrap">
           <h2 className="theme-title">{t('featured_events')}</h2>
-          <div className="flex flex-wrap gap-x-[30px] gap-y-[16px] whitespace-nowrap">
+          <div className="theme flex gap-x-[30px] gap-y-[16px] overflow-x-auto overflow-y-hidden lg:flex-wrap lg:overflow-visible">
             {recommendData.filter(item => item.category === 'featured-2').map((item) =>(
             <EventCard
               key={item.id} 
@@ -149,9 +149,9 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="article-wrap">
+        <div className="article-wrap w-full">
           <h2 className="article-title">{t('fresh_news')}</h2>
-          <div className="flex justify-between gap-x-[20px] whitespace-nowrap">
+          <div className="article-list flex flex-nowrap gap-x-[20px] overflow-x-auto overflow-y-hidden lg:flex-nowrap lg:overflow-visible -mx-4 px-4">
             {articleData.filter(item => item.category === 'news-3').map((item) =>(
             <ArticleCard
               key={item.id}
@@ -164,7 +164,7 @@ const Home = () => {
 
         <div className="themes-wrap">
           <h2 className="theme-title">{t('fresh_news')}</h2>
-          <div className="flex flex-wrap gap-x-[30px] gap-y-[16px] whitespace-nowrap">
+          <div className="theme flex gap-x-[30px] gap-y-[16px] overflow-x-auto overflow-y-hidden lg:flex-wrap lg:overflow-visible">
             {recommendData.filter(item => item.category === 'featured-3').map((item) =>(
             <EventCard
               key={item.id} 

@@ -4,6 +4,8 @@ import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useCartStore, } from '@/store/cart'
+import { formatDate } from '@/utills/time'
+import { Collapse } from 'antd'
 
 
 const GetTicket = () => {
@@ -27,20 +29,39 @@ const GetTicket = () => {
   useEffect(() => {
     getRecommendData()
   },[])
+
+  const collapseItems = [
+    {
+      key: '1',
+      label: ' 查看訂單細項',
+      children: (
+        <div className="OrderDetail-detail">
+          {cart.map((item, index) => (
+            <div key={index} className="OrderDetail-item block py-2 border-b">
+              <div className="OrderDetail-headline flex justify-between">
+                <span className="item-title font-medium">{item.title}</span>
+                <span className="item-price text-blue-600">{item.price}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )
+    }
+  ]
   
   if (!event) return <div>loading...</div>
   return (
     <div className="pt-[108px]" style={{ backgroundColor: '#eff4fb' }}>
-      <div className="cartPage flex w-[1080px] min-h-[calc(100vh-120px)] ">
-        <div className="event-info-wrapper inline-block w-[25%]">
-          <img className="mb-[24px]" src={event.image} alt="" />
+      <div className="cartPage flex flex-col lgx:flex-row w-full  min-h-[calc(100vh-120px)]">
+        <div className="event-info-wrapper w-full mb-6 lg:w-[25%] lg:mb-0">
+          <img className="mb-[24px] hidden lgx:block" src={event.image} alt="" />
           <div className="event-info-timer">
             <span className='timer-tick'>20:00</span>
             <span className='timer-description'>為確保您的權益，未完成訂單將自動取消</span>
           </div>
           <div className="event-info-content">
             <p className="event-info-itemName mb-[20px]">{event.title}</p>
-            <p className="event-info-itemTime mb-[5px]">{event.time}</p>
+            <p className="event-info-itemTime mb-[5px]">{formatDate(event.time)}</p>
             <p className="event-info-itemAddress mb-[5px]">{event.address}</p>
             <div className="mt-[24px]">
               <div className="notice-card flex flex-col items-start gap-2">
@@ -70,10 +91,10 @@ const GetTicket = () => {
         </div>
 
 
-      <div className="viewPage w-[75%] ml-[3%]">
+      <div className="viewPage w-full lg:ml-[3%] lg:flex-1">
         <div className="OrderDetail-container block">
           <div className="couponCode-discount-headline text-center h-6 bg-[#0088d2]" style={{color:'#fff'}}>購票成功</div>
-          <div className="OrderDetail-headline flex">
+          {/* <div className="OrderDetail-headline flex">
             <span className='detail-label'>票券明細</span>
             <span className="OrderDetail-toggle">
                 + 查看訂單細項
@@ -89,8 +110,10 @@ const GetTicket = () => {
                 </div>
               </div>
             ))}
-          </div>
-          <div className="Checkout-buttons-container flex justify-end mt-[20px]">
+          </div> */}
+          < Collapse items={collapseItems} size="large" />
+
+          <div className="Checkout-buttons-container flex justify-end mt-[20px] lg:flex-1 ">
             <button className='Checkout-next-btn' onClick={() => navigate('/')}>查看更多活動</button>
           </div>
         </div>

@@ -10,7 +10,6 @@ const SearchHeader = () => {
   const navigate = useNavigate()
   const { darkMode } = useUserStore()
 
-
   return (
     <div className={clsx("search-header-wrapper", {darkMode}) }>
       <header className="search-header-bar flex justify-between items-center">
@@ -26,9 +25,9 @@ const SearchHeader = () => {
         </div>
 
         <div className="search-header-user-container flex items-center">
-          <h4 className='search-header-link' >{t('login')}</h4>
+          <button className='search-header-link cursor-pointer'>{t('login')}</button>
           <div className="search-header-divider"></div>
-          <h4 className='search-header-link'>{t('register')}</h4>  {/* 只做到登入沒做註冊 */}
+          <button className='search-header-link'>{t('register')}</button>  {/* 註冊尚未實作 */}
         </div>
       </header>
     </div>

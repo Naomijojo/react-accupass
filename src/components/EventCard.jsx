@@ -7,6 +7,7 @@ const EventCard = ({ image, time, title, location, tag, views, likes, onGoToPage
   const navigate = useNavigate()    
   const isOnlineEvent = location === "線上活動";
 
+
   return (
     <div className="card">
       <div className="card-image" onClick={onGoToPage}>
