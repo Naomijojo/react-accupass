@@ -119,7 +119,7 @@ const Home = () => {
             
         <div className="article-wrap w-full">
           <h2 className="article-title">{t('fresh_news')}</h2>
-          <div className="article-list flex flex-nowrap gap-x-[20px] overflow-x-auto overflow-y-hidden lg:flex-nowrap lg:overflow-visible -mx-4 px-4">
+          <div className="article-list flex flex-nowrap gap-x-[20px] overflow-x-auto overflow-y-hidden lg:flex-nowrap lg:overflow-visible px-4 py-6 lg:px-0 lg:py-0">
             {articleData.filter(item => item.category === 'news-2').map((item) =>(
             <ArticleCard
               key={item.id}
@@ -151,7 +151,7 @@ const Home = () => {
 
         <div className="article-wrap w-full">
           <h2 className="article-title">{t('fresh_news')}</h2>
-          <div className="article-list flex flex-nowrap gap-x-[20px] overflow-x-auto overflow-y-hidden lg:flex-nowrap lg:overflow-visible -mx-4 px-4">
+          <div className="article-list flex flex-nowrap gap-x-[20px] overflow-x-auto overflow-y-hidden lg:flex-nowrap lg:overflow-visible px-4 py-6 lg:px-0 lg:py-0">
             {articleData.filter(item => item.category === 'news-3').map((item) =>(
             <ArticleCard
               key={item.id}
