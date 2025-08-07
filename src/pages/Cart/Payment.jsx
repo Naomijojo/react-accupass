@@ -7,9 +7,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useCartStore } from '@/store/cart'
 import { formatDate } from '@/utills/time'
 import { paymentOptions } from '@/utills/payments'
+import CountdownTimer from '@/components/CountdownTimer'
 
-
-  
 
 const Payment = () => {
   const navigate = useNavigate()
@@ -17,7 +16,7 @@ const Payment = () => {
   const ticketId = searchParams.get('ticketId')
   const orderId = searchParams.get('orderId')
   const { orders, setOrders, cart } = useCartStore()  // 儲存訂單資料
-  const [ event, setEvent] = useState(null)   // 儲存活動資料
+  const [ event, setEvent] = useState(null)           // 儲存活動資料
 
   // 管理當前選中的付款方式 預設為信用卡
   const [selectedPayment, setSelectedPayment] = useState(paymentOptions[0].label)
@@ -42,7 +41,6 @@ const Payment = () => {
     })
     setOrders(newOrders)
 
-    // 4.取票
     navigate(`/fillOrder/getTicket?ticketId=${ticketId}&?orderId=${orderId}`)
   }
 
@@ -62,7 +60,7 @@ const Payment = () => {
       <div className="event-info-wrapper w-full mb-6 lg:w-[25%] lg:mb-0">
         <img className="mb-[24px] hidden lgx:block" src={event.image} alt="" />
         <div className="event-info-timer">
-          <span className='timer-tick'>20:00</span>
+          <CountdownTimer />
           <span className='timer-description'>為確保您的權益，未完成訂單將自動取消</span>
         </div>
         <div className="event-info-content">

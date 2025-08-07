@@ -82,6 +82,7 @@ const Search = () => {
   const addSearchHistory = (newSearchHistory) => {
     localStorage.setItem('searchHistory', JSON.stringify(newSearchHistory))
     setSearchHistory(newSearchHistory)
+    
   }
 
   const handleSearch = (keyword) =>{
@@ -122,7 +123,7 @@ const Search = () => {
     //加入監聽器
     document.addEventListener('click', handleClickOutside )
     //組件卸載(換頁 關閉頁面)的時候執行“移除監聽”
-    //卸載:react 是 CSR(client side render)
+    //卸載:react 是 CSR
     //整個react都是一個js 是透過路由把東西放進所需頁面
     return () => {
       document.removeEventListener('click', handleClickOutside )
@@ -146,9 +147,9 @@ const Search = () => {
   useEffect(() => {
     //取得localStorage的searchHistory
     const searchHistoryStorage = localStorage.getItem('searchHistory')
-    //如果有值就轉成JSON格式
+    //如果有值就轉成物件(parse)
     if (searchHistoryStorage) {
-      //將JSON格式的searchHistory存入searchHistory
+      //將searchHistory存入searchHistory
       setSearchHistory(JSON.parse(searchHistoryStorage))
     }
     //如果沒有值就設定為空陣列
@@ -168,7 +169,7 @@ const Search = () => {
           <div className="SearchPageBar flex flex-col">
             <div className="SearchBarDrown relative flex items-center">
               <div ref={searchRef} className="SearchBar flex justify-center items-center">
-                <input type="search" placeholder={t('keywords')} maxLength={80} value={value} onChange={(e) => setValue(e.target.value)}
+                <input type="search" placeholder={t('keywords')} maxLength={80} value={value} onChange={(e)=> setValue(e.target.value)}
                 onClick={() => setIsSearchClick(true)}  
                 onKeyDown={handleKeyDown} />
                 <img src={FilterIcon} alt="" className="search-icon" />

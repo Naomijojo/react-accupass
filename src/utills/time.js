@@ -1,10 +1,11 @@
+// 格式化日期
 export const formatDate = (timestamp) => {
 	const now = timestamp ? new Date(timestamp * 1000) : new Date();
   // 完整的時間戳是13位數 *1000變為10位數
 	// 取得年份、月份和日期
   const year = now.getFullYear()
   // 月份從0開始，所以需要+1
-  const month = String(now.getMonth() + 1).padStart(2, '0') // 月份从0开始
+  const month = String(now.getMonth() + 1).padStart(2, '0') // 月份從0開始
   const day = String(now.getDate()).padStart(2, '0')
   
   const hours = String(now.getHours()).padStart(2, '0')

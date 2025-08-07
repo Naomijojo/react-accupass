@@ -1,11 +1,11 @@
 const ArticleCard = ({ image, title }) => {
-    const getArticleCardSize = () => {
-      return `
-        w-[256px] h-[320px]
-        md:w-[307px] md:h-[371px]
-        lg:w-[201px] lg:h-[265px]
-      `
-    }
+  const getArticleCardSize = () => {
+    return `
+      w-[256px] h-[320px]
+      md:w-[307px] md:h-[371px]
+      lg:w-[201px] lg:h-[265px]
+    `
+  }
 
   return (
     <div className={`article-card flex-shrink-0 ${getArticleCardSize}`}>

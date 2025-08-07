@@ -12,8 +12,6 @@ const GetTicket = () => {
   const navigate = useNavigate()
   const [ searchParams ] = useSearchParams()
   const ticketId = searchParams.get('ticketId')
-  const orderId = searchParams.get('orderId')
-
 
   const { cart } = useCartStore() //獲取購物車數據
 
@@ -56,8 +54,8 @@ const GetTicket = () => {
         <div className="event-info-wrapper w-full mb-6 lg:w-[25%] lg:mb-0">
           <img className="mb-[24px] hidden lgx:block" src={event.image} alt="" />
           <div className="event-info-timer">
-            <span className='timer-tick'>20:00</span>
-            <span className='timer-description'>為確保您的權益，未完成訂單將自動取消</span>
+            <span className='timer-tick invisible' >20:00</span>
+            <span className='timer-description text-center'>已完成報名</span>
           </div>
           <div className="event-info-content">
             <p className="event-info-itemName mb-[20px]">{event.title}</p>

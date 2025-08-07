@@ -15,7 +15,7 @@ const Layout = () => {
   const location = useLocation() 
   
   const { darkMode, token, setIsModalOpen } = useUserStore()
-  console.log(location);
+  //console.log(location);
   
   const getHeader = () => {
     if (location.pathname.startsWith('/search')) {
@@ -28,7 +28,7 @@ const Layout = () => {
   }
   
   useEffect(()=> {
-    if(authPaths.some(path => location.pathname.startsWith(path)) && !token){  // authPaths有包含‘fillOrder'或'/ticket'以及沒有token時
+    if(authPaths.some(path => location.pathname.startsWith(path)) && !token){  // authPaths有包含'fillOrder'或'/ticket'以及沒有token時
       setIsModalOpen(true)                                                     // 登入彈窗打開
       navigate('/')                                                            // 導回首頁
     }

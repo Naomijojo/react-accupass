@@ -12,12 +12,11 @@ import { Dropdown, Modal, message } from 'antd'
 import { useState, useEffect } from 'react'
 import i18n from '@/i18n'
 import clsx from 'clsx'
-// import axios from 'axios'
 import { userApi } from '@/api/user'
 import { useUserStore } from '@/store/user'
 
 const Header = () => {
-  const { t } = useTranslation() // 解構賦值出 t 函數
+  const { t } = useTranslation() 
   const navigate = useNavigate()
   const { token, setToken, userInfo, setUserInfo, isModalOpen, setIsModalOpen, language, setLanguage, darkMode, setDarkMode, location = 'taipei', setLocation } = useUserStore()
   const [ currentLocation, setCurrentLocation ] = useState(t(`location.${location}`))
@@ -58,10 +57,10 @@ const Header = () => {
   ])
   
   // - 語言
-  // i18n翻譯 (先解構賦值出 t 函數->切換語系->不希望網頁刷新後語言改變就要用全局Store持久化設定方式來控制)
+  // i18n翻譯 (先解構賦值出 t 函數->切換語系->不要刷新後語言改變要用全局Store持久化設定方式來控制)
   const handleChangeLanguage = (item) => {
     const newLanguage = item.key
-    i18n.changeLanguage(newLanguage) // changeLanguage 是i18n的切換方法
+    i18n.changeLanguage(newLanguage) // i18n提供 changeLanguage 的切換方法
     setLanguage(newLanguage)         
     //改dropdown disables狀態
     const newItems = languageItems.map(i => {
@@ -191,10 +190,25 @@ const Header = () => {
       // api成功請求會回傳data -> 1.要取出token
       const { accessToken, firstName } = await userApi.login( username, password )
       console.log('accessToken:',accessToken);
+      console.log('完整的 API 回應:', { accessToken, firstName });
       
+      // 除錯： 解碼 JWT token 的 payload 部份
+      // try {
+      //   const tokenParts = accessToken.split('.')
+      //   if (tokenParts.length === 3) {
+      //     const payload = JSON.parse(atob(tokenParts[1]))
+      //     console.log('Token payload:', payload)
+      //     console.log('Token 過期時間:', new Date(payload.exp * 1000))
+      //   }
+      // } catch (error) {
+      //   console.log('Token 解碼失敗:', error)
+      // }
+
+
       // 2.再將token及userInfo存入user全域狀態
       setToken(accessToken)
       setUserInfo({ firstName })
+
 
       // 3.關閉ModalOpen
       setIsModalOpen(false)

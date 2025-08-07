@@ -36,7 +36,6 @@ const Event = () => {
          setIsModalOpen(true)           //如果沒有token,就打開登入彈窗
       }
    }
-   
    if (!event) return <div>loading...</div> 
    return (
       <div className="pt-[50px]">
@@ -91,7 +90,7 @@ const Event = () => {
                                  <div className="event-subtitle-content ml-[10px]">
                                     <ul className="event-content-tags-container flex items-center flex-wrap mt-[5px]">
                                        <li className="event-tag">
-                                          <span target="_blank" >{event.tag}</span>
+                                          <span>{event.tag}</span>
                                        </li>
                                     </ul>
                                  </div>
@@ -116,7 +115,7 @@ const Event = () => {
                            <div className="org-description org-expand">
                               <p className="org-info-text">{event.orgInfoText}</p>
                            </div>
-                           <button className="org-register-button flex justify-center items-center w-[200px] h-[50px] mt-[16px]" href="" onClick={() => handleTicket(event)}> 立即報名 <i className="fa-solid fa-chevron-right fa-lg"></i> </button>
+                           <button className="org-register-button flex justify-center items-center w-[200px] h-[50px] mt-[16px]" onClick={() => handleTicket(event)}> 立即報名 <i className="fa-solid fa-chevron-right fa-lg"></i> </button>
                             
                            <div className="org-buttons-container flex justify-center items-center mt-[40px]" >
                               <div className="org-button flex justify-center " >

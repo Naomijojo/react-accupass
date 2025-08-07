@@ -4,23 +4,24 @@ import { homeApi } from "@/api/home"
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams} from 'react-router-dom'
 import { useCartStore } from '@/store/cart'
+import { useTimerStore } from '@/store/timer'
 import { formatDate } from '@/utills/time'
 import { areaOptions } from '@/utills/constants'
+import CountdownTimer from '@/components/CountdownTimer'
 
 const genders = [ '不公開', '男性', '女性' ]
 
 
 const FillOrder = () => {
-  // const params = useParams() // 動態參數params
-  // const routeId = Number(params.id) // 轉換成數字
   const navigate = useNavigate()
-  const [ searchParams ] = useSearchParams()     // []陣列方式拿URL中的參數
-  const ticketId = searchParams.get('ticketId')  // 獲取ticketId參數
+  const [ searchParams ] = useSearchParams()          // 拿URL中的參數
+  const ticketId = searchParams.get('ticketId')       // 獲取ticketId參數
   // console.log('ticketId',ticketId) //  /cart?ticketId=1   1不是數字是字串
   
-  const [ event, setEvent] = useState(null)   // 儲存活動資料
+  const [ event, setEvent] = useState(null)           // 儲存活動資料
   const [ isChecked, setIsChecked ] = useState(false) // 預設打勾為不點擊狀態
   const { cart, orders, setOrders } = useCartStore()
+  const { startTimer } = useTimerStore()
 
   // 獲取活動詳細資料
   const getRecommendData = async () => {
@@ -54,9 +55,7 @@ const FillOrder = () => {
     console.log(newOrder)
     
     setOrders([ ...orders, newOrder])
-    navigate(`/fillOrder/payment?ticketId=${ticketId}&?orderId=${orderId}`)
-
-
+    navigate(`/fillOrder/payment?ticketId=${ticketId}&orderId=${orderId}`)
   }
 
     const handleCheckboxChange = () => {
@@ -70,7 +69,12 @@ const FillOrder = () => {
     // 組件加載獲取活動數據
     useEffect(() => {
       getRecommendData()
-    },[])
+    }, [])
+
+    // 組件加載時啟動計時
+    useEffect(() => {
+      startTimer()
+    }, [])
 
     // 表單輸入或勾選發生變化時 更新按鈕的禁用狀態
     useEffect(() =>{
@@ -86,8 +90,7 @@ const FillOrder = () => {
         <div className="event-info-wrapper w-full mb-6 lg:w-[25%] lg:mb-0">
           <img className="mb-[24px] hidden lgx:block" src={event.image} alt="" />
           <div className="event-info-timer">
-
-            <span className='timer-tick'>20:00</span>
+            <CountdownTimer />
             <span className='timer-description'>為確保您的權益，未完成訂單將自動取消</span>
           </div>
           <div className="event-info-content">

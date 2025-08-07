@@ -60,7 +60,7 @@ const Ticket = () => {
 
   useEffect(() => {
     // 陣列.reduce((上一個值, 操作元素) => ..., 初始值)
-    // 陣列.reduce((初始值, 操作元素) => 初始值+當前元素價錢*當前元素數量, 初始值)
+    // 陣列.reduce((初始值, 操作元素) => 初始值 + 當前元素價錢 * 當前元素數量, 初始值)
     const qtySum = tickets.reduce((prev, item) => prev + item.qty, 0)
     const priceSum = tickets.reduce((prev, item) => prev + item.price * item.qty, 0)
     setTotalPrice(priceSum)

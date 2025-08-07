@@ -6,6 +6,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 自定義工具類別 */
+.visibility-hidden {
+  visibility: hidden;
+}
+
 *{
   box-sizing: border-box; 
 }
