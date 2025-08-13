@@ -536,8 +536,8 @@ a{
 }
 @media (max-width:640px) {
     .card{
-        width: 428px;
-        height: 366px;
+        width: 325px;
+        height: 325px;
     }    
 }
 .card:hover{

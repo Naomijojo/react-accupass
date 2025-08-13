@@ -152,7 +152,6 @@ const Search = () => {
       //將searchHistory存入searchHistory
       setSearchHistory(JSON.parse(searchHistoryStorage))
     }
-    //如果沒有值就設定為空陣列
   },[])
 
 
@@ -160,11 +159,10 @@ const Search = () => {
     <div>
       <div className={clsx("main pt-[72px]", { darkMode }) }>
         <div className="container max-w-[1080px]">
-          <h1 className="SearchTitle flex justify-center items-center">
-            {location || tag ? `${location || ''} ${tag || ''}` : '所有活動'}
+          <h1 className="SearchTitle flex justify-center items-center animate-fade-in-down">
             {/* 條件檢查 location 或 tag 是否有值 ? `如果location(tag)有值則顯示該值`:沒有則顯示所有活動*/}
+            {location || tag ? `${location || ''} ${tag || ''}` : t('allActivity') }
           </h1>
-
 
           <div className="SearchPageBar flex flex-col">
             <div className="SearchBarDrown relative flex items-center">

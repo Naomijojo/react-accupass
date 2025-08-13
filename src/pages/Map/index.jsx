@@ -2,6 +2,7 @@ import { homeApi } from "@/api/home"
 import Loading from "@/components/Loading"
 import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate, useSearchParams } from "react-router-dom"
+import { useUserStore } from "@/store/user"
 import {
   GoogleMap,
   MarkerF,
@@ -23,19 +24,20 @@ const defaultCenter = {
 
 
 const Map = () => {
-  const params = useParams() //動態參數params
-  const routeId = Number(params.id) //轉換成數字
+  const params = useParams() //-動態參數params
+  const routeId = Number(params.id) //-轉換成數字
   const [ event, setEvent ] = useState(null)
-  const [ searchParams ] = useSearchParams()
+   const [ searchParams ] = useSearchParams()
 
   const [ isInfoOpen, setIsInfoOpen ] = useState(false)
   const [ currentPosition, setCurrentPosition ] = useState(defaultCenter)
   
+  const { token, setIsModalOpen } = useUserStore()
   
-  const ticketId = searchParams.get('ticketId')
+   const ticketId = searchParams.get('ticketId')
   const navigate = useNavigate()
 
-  // 根據 id 從 recommendData 中抓取資料
+  // -根據 id 從 recommendData 中抓取資料
   const getEventData = async() => {
     const { data } = await homeApi.getRecommend()
     const detail = data.find(item => item.id === routeId)
@@ -47,7 +49,11 @@ const Map = () => {
   
 
   const handleTicket = () => {
-    navigate(`/fillOrder?ticketId=${routeId}`) 
+    if(token){
+      navigate(`/fillOrder?ticketId=${routeId}`) 
+    }else{
+      setIsModalOpen(true)
+    }
   }
 
   const BackToEvent = () => {
@@ -55,7 +61,7 @@ const Map = () => {
     navigate(`/event/${routeId}`)
   }
 
-  // 運行Google Map 是否載入成功
+  // 運行 Google Map 是否載入成功
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
     libraries: ['places'],

@@ -18,15 +18,13 @@ const Ticket = () => {
   const navigate = useNavigate()
   const { cart, setCart } = useCartStore() 
   
-
-  // ** 解構賦值後都抓不到tickets的資料 都變成undefiend 但是data都有資料? 
   const getEventData = async () => {
     const { data } = await homeApi.getRecommend();
-    const detail = data.find(item => item.id === routeId) // data用find找到item.id等於routeId的值，並將這個值命名為 detail +-時再增加一個屬性
+    const detail = data.find(item => item.id === routeId)
     
     if(detail){
-      setEvent(detail) //這裡將 detail（找到的活動資料）設置為 event 的值。
-      setTickets(detail.tickets?.map(item => ({ ...item, qty: 0 })) ?? [])
+      setEvent(detail) //將 detail（找到的活動資料）設置為 event 的值。
+      setTickets(detail.tickets?.map(item => ({ ...item, qty: 0 })) ?? []) 
     }
   }
   
@@ -68,6 +66,8 @@ const Ticket = () => {
   }, [tickets]) // []內有變數表依賴tickets變化時執行
 
 
+  // 免費票券的話 不顯示ticketSelect-ticket-number -> 一起先轉字串再檢查(includes判斷字串)
+  const isFreeTicket = tickets.some(item => String(item.price).includes('免費'))
 
   
 
@@ -151,10 +151,14 @@ const Ticket = () => {
       </div>
       <div className="ticketSelect-bottom-container sticky  flex justify-center">
         <div className="ticketSelect-bottom-item flex flex-col items-end w-[1080px]">
-          <span className="ticketSelect-ticket-number">
-            <span >{totalQty}張，</span>
-            <span >NT${totalPrice}</span>
-          </span>
+          <span >{totalQty}張 </span>
+
+          {/* 不是免費的話 要顯示票券數量和總價 */}
+          {!isFreeTicket && (
+            <span className="ticketSelect-ticket-number">
+              <span >NT${totalPrice}</span>
+            </span>
+          )}
           <button className="ticketSelect-confirm-button w-full max-w-[1024px] h-[40px]"  onClick={handleAddToCart} >立即購票</button>
         </div>
       </div>

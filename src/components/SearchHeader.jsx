@@ -4,11 +4,17 @@ import { useTranslation } from "react-i18next"
 import { useUserStore } from '@/store/user'
 import clsx from 'clsx'
 
-
 const SearchHeader = () => {
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
+  const { darkMode, setIsModalOpen, token, userInfo } = useUserStore()
+
   const navigate = useNavigate()
-  const { darkMode } = useUserStore()
+
+  const handleClickLogin = () => {
+    setIsModalOpen(true)
+  }
+
+  
 
   return (
     <div className={clsx("search-header-wrapper", {darkMode}) }>
@@ -25,9 +31,15 @@ const SearchHeader = () => {
         </div>
 
         <div className="search-header-user-container flex items-center">
-          <button className='search-header-link cursor-pointer'>{t('login')}</button>
-          <div className="search-header-divider"></div>
-          <button className='search-header-link'>{t('register')}</button>  {/* 註冊尚未實作 */}
+          {token?(
+              <span className="search-header-link">{userInfo.firstName}</span>
+          ):(
+            <>
+              <button className='search-header-link cursor-pointer' onClick={handleClickLogin}>{t('login')}</button>
+              <div className="search-header-divider"></div>
+              <button className='search-header-link'>{t('register')}</button>
+            </>
+          )}
         </div>
       </header>
     </div>
