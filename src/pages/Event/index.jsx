@@ -6,7 +6,7 @@ import EventIconLink from "@/assets/images/common/event-icon-link.svg"
 import EventIconTags from "@/assets/images/common/event-icon-tags.svg" 
 
 import { homeApi } from "@/api/home"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate, Link } from "react-router-dom"
 import { formatDate } from '@/utills/time'
 import { useUserStore } from "@/store/user"
@@ -15,18 +15,31 @@ const Event = () => {
    const params = useParams() //動態參數params
    const routeId = Number(params.id) //params轉換成數字
    const [ event, setEvent ] = useState(null)
+   const [ isLoading, setIsLoading ] = useState(true)
    const navigate = useNavigate()
    const { token, setIsModalOpen } = useUserStore()
 
    // 根據 id 從 recommendData 中抓取資料
-   const getRecommendData = async() => {
-      const { data: events } = await homeApi.getRecommend()
-      const detail = events.find(item => item.id === routeId)
-      setEvent(detail)
-   }
+   const getRecommendData = useCallback(async() => {
+      try {
+         const { data: events } = await homeApi.getRecommend()
+         const detail = events.find(item => item.id === routeId)
+         if (!detail) {
+            navigate('/not-found', { replace: true })
+            return
+          }
+          setEvent(detail)
+      } catch(error){
+         console.error('獲取活動資料失敗:', error)
+         navigate('/not-found', { replace: true })
+      } finally {
+         setIsLoading(false)
+      }
+   }, [routeId, navigate])
+   
    useEffect(() => {
       getRecommendData()
-   },[]) //沒有依賴陣列,表掛載時執行一次 //如[]內有變數則再執行一次(當routeId變化時重新執行)
+   }, [getRecommendData]) 
 
    
    const handleTicket = (item) => {
@@ -36,17 +49,17 @@ const Event = () => {
          setIsModalOpen(true)           //如果沒有token,就打開登入彈窗
       }
    }
-   if (!event) return <div>loading...</div> 
+   if (isLoading) return <div>loading...</div> 
    return (
       <div className="pt-[50px]">
          <div className="event-inner-container">
             <div className="event-banner-box">
-               <div className="event-banner-bg min-w-[540px] rounded-[16px_16px_0_0]">
-                  <img src={event.image} alt="" />
+               <div className="event-banner-bg rounded-[16px_16px_0_0]">
+                  <img src={event.image} alt="EventImg" />
                </div>
                <div className="event-detail flex bg-[#fff] rounded-[0_0_16px_16px] ">
-                  <main className="event-detail-content md:max-w-[calc(100%-45px)] max-w-[calc(100%-300px)] ">
-                     <section className="event-basicInfo-container rounded-[0_0_0_16px]">
+                  <main className="event-detail-content ">
+                     <section className="event-basicInfo-container rounded-[0_0_0_16px] max-lg:rounded-[0_0_16px_16px]">
                         <div className="event-header-container mt-[10px] mb-[24px]" >
                            <h1 className="event-title"> {event.title} </h1>
                            <div className="event-popularity-layout flex items-center">
@@ -76,7 +89,7 @@ const Event = () => {
                            <div className="event-subtitle-container flex mt-[10px]">
                               <img src={EventLocationIcon} className="event-subtitle-icon" />
                               <div className="event-subtitle-content ml-[10px]">
-                                 <div className="event-external-link flex items-center">{event.address}
+                                 <div className="event-external-link flex flex-wrap items-center">{event.address}
                                     <Link to={`/map/${routeId}`} className="ml-3 px-2 p-[2px] flex items-center border border-solid border-blue-400 rounded-md">
                                        查看位置
                                        <img className="ml-2 event-icon-link"  src={EventIconLink} alt="EventIconLink" />
@@ -130,7 +143,25 @@ const Event = () => {
                   </div>
                </div>
             </div>
-         </div>      
+         </div>
+         
+         {/* <1024px顯示報名按鈕區塊 */}
+         <div className="event-bottom-bar">
+            <div className="bottom-org-title">
+               <div className="avatarBase-img-container rounded-[50%]">
+                  <img className="avatar-img rounded-[50%]" src={event.avatarImg} alt="" />
+               </div>
+               <p className="org-title">{event.orgTitle}</p>
+            </div>
+            
+            <div className="bottom-heart-btn">
+               <i className="fa-regular fa-heart fa-lg"></i>
+            </div>
+            
+            <button className="bottom-register-btn" onClick={() => handleTicket(event)}>
+               立即報名
+            </button>
+         </div>
       </div> 
    )
 };  

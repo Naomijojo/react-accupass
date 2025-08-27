@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom"
 import { useNavigate } from 'react-router-dom'
 import { useCartStore } from '@/store/cart'
 import { formatDate } from '@/utills/time'
+import { message } from 'antd'
 
 const Ticket = () => {
   const params = useParams() // 動態參數params
@@ -42,7 +43,12 @@ const Ticket = () => {
         item.id === id ? { ...item, qty: Math.max((item.qty || 0) - 1, 0) } : item ))
   }
   
-  const handleAddToCart = () => {   //點立即購票後 localstorage就會出現cart的key cart內資料會顯示剛剛選的張數資料 填完個資後點擊下一步到payment cart的order會出現userInfo資料
+  //點立即購票後 localstorage就會出現cart的key cart內資料會顯示剛剛選的張數資料 填完個資後點擊下一步到payment cart的order會出現userInfo資料
+  const handleAddToCart = () => {  
+    if(totalQty === 0){
+      message.warning('請選擇票券')
+      return
+    }
     // 1.先過濾只傳遞/加入數量 >0 的數據 
     const newCart = tickets.filter(item => item.qty > 0 )
     // 2.過濾完加進『全局狀態』更新 (沒後端暫存localstorage)
@@ -63,7 +69,7 @@ const Ticket = () => {
     const priceSum = tickets.reduce((prev, item) => prev + item.price * item.qty, 0)
     setTotalPrice(priceSum)
     setTotalQty(qtySum) 
-  }, [tickets]) // []內有變數表依賴tickets變化時執行
+  }, [tickets]) // 依賴tickets變化時執行
 
 
   // 免費票券的話 不顯示ticketSelect-ticket-number -> 一起先轉字串再檢查(includes判斷字串)

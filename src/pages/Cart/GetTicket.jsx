@@ -111,7 +111,7 @@ const GetTicket = () => {
           </div> */}
           < Collapse items={collapseItems} size="large" />
 
-          <div className="Checkout-buttons-container flex justify-end mt-[20px] lg:flex-1 ">
+          <div className="Checkout-buttons-container flex justify-center mt-[20px] lg:justify-end">
             <button className='Checkout-next-btn' onClick={() => navigate('/')}>查看更多活動</button>
           </div>
         </div>

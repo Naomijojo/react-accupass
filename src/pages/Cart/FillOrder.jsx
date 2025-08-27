@@ -71,10 +71,10 @@ const FillOrder = () => {
       getRecommendData()
     }, [])
 
-    // 組件加載時啟動計時
+    // 組件加載時啟動計時, 傳入eventId和navigate函數,倒回event頁
     useEffect(() => {
-      startTimer()
-    }, [])
+      startTimer(ticketId, navigate)
+    }, [ticketId, navigate, startTimer])
 
     // 表單輸入或勾選發生變化時 更新按鈕的禁用狀態
     useEffect(() =>{
@@ -123,7 +123,7 @@ const FillOrder = () => {
             </div>
           </div>
         </div>
-        <div className="RegistrationPage-registration w-full lg:ml-[3%] lg:flex-1">
+        <div className="RegistrationPage-registration w-full pr-5 lg:ml-[3%] lg:flex-1">
           <div className="registration-headline">填寫參加人資訊
             <p className='registration-headline-des'>報名資料將用於主辦單位安排活動，活動票券相關資訊將寄至訂購人信箱，如需修改電郵地址請至 <a href="">帳號管理</a></p>
           </div>
@@ -172,7 +172,7 @@ const FillOrder = () => {
           <div className="registration-agree mb-[25px]">
             <label className='checkBox flex items-center overflow-hidden'>
               <input type="checkbox" className="check-button" checked={isChecked} onChange={handleCheckboxChange}/>
-              <span className='check-label '>我已閱讀並同意 ACCUPASS <a href="#!" target='blank'className='text-[#2ab3fc]' >票券訂購暨使用須知</a>、 <strong>退票規則</strong> 及 <strong>購票須知</strong> 條款</span>
+              <span className='check-label '>我已閱讀並同意 ACCUPASS <a href="https://www.accupass.com/terms/ticket" target='blank'className='text-[#2ab3fc]' >票券訂購暨使用須知</a>、 <strong>退票規則</strong> 及 <strong>購票須知</strong> 條款</span>
             </label>
           </div>
           <div className="registration-buttons flex">

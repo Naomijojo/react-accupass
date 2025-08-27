@@ -1,6 +1,6 @@
 import { homeApi } from "@/api/home"
 import Loading from "@/components/Loading"
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useParams, useNavigate, useSearchParams } from "react-router-dom"
 import { useUserStore } from "@/store/user"
 import {
@@ -27,7 +27,8 @@ const Map = () => {
   const params = useParams() //-動態參數params
   const routeId = Number(params.id) //-轉換成數字
   const [ event, setEvent ] = useState(null)
-   const [ searchParams ] = useSearchParams()
+  const [ searchParams ] = useSearchParams()
+  const [ isDataLoading, setIsDataLoading ] = useState(true)
 
   const [ isInfoOpen, setIsInfoOpen ] = useState(false)
   const [ currentPosition, setCurrentPosition ] = useState(defaultCenter)
@@ -37,15 +38,28 @@ const Map = () => {
    const ticketId = searchParams.get('ticketId')
   const navigate = useNavigate()
 
-  // -根據 id 從 recommendData 中抓取資料
-  const getEventData = async() => {
-    const { data } = await homeApi.getRecommend()
-    const detail = data.find(item => item.id === routeId)
-    setEvent(detail)
-  }
+  const getEventData = useCallback(async() => {
+    try {
+      const { data } = await homeApi.getRecommend()
+      const detail = data.find(item => item.id === routeId)
+      
+      if (!detail) {
+        navigate('/not-found', { replace: true })
+        return
+      }
+      setEvent(detail)
+    } catch (error) {
+      console.error('獲取活動資料失敗:', error)
+      navigate('/not-found', { replace: true }) //避免無效 URL 留在歷史中
+    }
+
+    setIsDataLoading(false)
+  }, [routeId, navigate])
+  
+
   useEffect(() => {
     getEventData()
-  },[])
+  }, [getEventData])
   
 
   const handleTicket = () => {
@@ -84,7 +98,8 @@ const Map = () => {
 
   
   
-  if (!isLoaded || !event) return <Loading />
+  // 如果 Google Maps 還沒載入或資料還在載入中，顯示 Loading
+  if (!isLoaded || isDataLoading) return <Loading />
   return (
     <div className="map-container pt-[50px] max-w-[1080px]">
       <div className="flex border border-solid border-gray-400 mt-12">

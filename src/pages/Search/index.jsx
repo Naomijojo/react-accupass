@@ -45,7 +45,11 @@ const Search = () => {
   const [allData, setAllData] = useState([])
   //input的值
   const [value, setValue] = useState('')
+  //searchPageBar:到達滾動位置變sticky
+  const [isSearchBarSticky, setIsSearchBarSticky] = useState(false)
+
   const searchRef = useRef(null)
+  const searchPageBarRef = useRef(null)
 
   const { t } = useTranslation();
 
@@ -54,10 +58,10 @@ const Search = () => {
   // 查詢字串'l'、 'q'
   const location = searchParams.get('l')
   const tag = searchParams.get('q')
-  console.log(`location ${location}`)  
-  console.log(`tag ${tag}`)  
+  // console.log(`location ${location}`)  
+  // console.log(`tag ${tag}`)  
 
-  const  getAllData = async() =>{
+  const getAllData = async() =>{
     //api獲取推薦卡片的資料
     const { data: recommendData } = await homeApi.getRecommend()
     setAllData(recommendData)
@@ -82,7 +86,6 @@ const Search = () => {
   const addSearchHistory = (newSearchHistory) => {
     localStorage.setItem('searchHistory', JSON.stringify(newSearchHistory))
     setSearchHistory(newSearchHistory)
-    
   }
 
   const handleSearch = (keyword) =>{
@@ -90,15 +93,26 @@ const Search = () => {
     setSearchData(filteredData)
   } 
 
+  //*寫入歷史
+  // 1. 用戶按 Enter 搜尋
   const handleKeyDown = (e) => {
     if (e.keyCode === 13 ){
       const keyword = e.target.value.trim()
-      //用keyword搜尋 (title的關鍵字)
+      // 執行keyword搜尋 (title的關鍵字)
       handleSearch(keyword)
+      
+      // 2. 只有非空值才能加入 searchHistory state
+      if (keyword && !searchHistory.some(item => item === keyword)) {
+        const newSearchHistory = [...searchHistory, keyword]
+        // +限制只保留最新的 6 筆資料
+        const limitedHistory = newSearchHistory.slice(-6)
+        // 3. 同時存到 localStorage
+        addSearchHistory(limitedHistory)
+      }
 
-      if (searchHistory.some(item => item === keyword)) return 
-      const newSearchHistory = [...searchHistory, e.target.value]
-      addSearchHistory(newSearchHistory)
+      // +關閉modal，根據關鍵字決定是否保留內容
+      setIsSearchClick(false)
+      setValue(keyword || '')
     }
   }
 
@@ -123,7 +137,6 @@ const Search = () => {
     //加入監聽器
     document.addEventListener('click', handleClickOutside )
     //組件卸載(換頁 關閉頁面)的時候執行“移除監聽”
-    //卸載:react 是 CSR
     //整個react都是一個js 是透過路由把東西放進所需頁面
     return () => {
       document.removeEventListener('click', handleClickOutside )
@@ -143,18 +156,42 @@ const Search = () => {
   }
 
 
-  //掛載時執行
+  // *讀取歷史: 從 localStorage 讀取搜尋歷史並設定到 state
+  // 1. 頁面載入時執行
   useEffect(() => {
-    //取得localStorage的searchHistory
+    // 2. 從 localStorage 讀取之前儲存的歷史
     const searchHistoryStorage = localStorage.getItem('searchHistory')
-    //如果有值就轉成物件(parse)
+    // 3. 恢復到 searchHistory state
     if (searchHistoryStorage) {
-      //將searchHistory存入searchHistory
       setSearchHistory(JSON.parse(searchHistoryStorage))
     }
   },[])
 
+  // SearchPageBar滾動監聽   
+  useEffect(() => {
+    const handleScroll = () => {
+      const searchHeader = document.querySelector('.search-header-wrapper')
+      const searchPageBar = searchPageBarRef.current
+      
+      if (searchHeader && searchPageBar) {
+        const searchHeaderHeight = searchHeader.offsetHeight
+        const scrollY = window.scrollY
+        
+        // 滾動超過 search-header 高度，只顯示固定的 SearchPageBar，不顯示search-header
+        if (scrollY > searchHeaderHeight) {
+          setIsSearchBarSticky(true)
+          searchHeader.classList.add('hidden')
+        } else {
+          setIsSearchBarSticky(false)
+          searchHeader.classList.remove('hidden')
+        }
+      }
+    }
 
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+  
   return (
     <div>
       <div className={clsx("main pt-[72px]", { darkMode }) }>
@@ -164,16 +201,31 @@ const Search = () => {
             {location || tag ? `${location || ''} ${tag || ''}` : t('allActivity') }
           </h1>
 
-          <div className="SearchPageBar flex flex-col">
+          <div 
+            ref={searchPageBarRef}
+            className={`SearchPageBar flex flex-col ${isSearchBarSticky ? 'sticky' : ''}`}
+          >
             <div className="SearchBarDrown relative flex items-center">
               <div ref={searchRef} className="SearchBar flex justify-center items-center">
-                <input type="search" placeholder={t('keywords')} maxLength={80} value={value} onChange={(e)=> setValue(e.target.value)}
+                <input 
+                type="search" 
+                id="search-input"
+                name="search"
+                placeholder={t('keywords')} 
+                maxLength={80} 
+                value={value} 
+                onChange={(e)=> {
+                  console.log('用戶輸入:', e.target.value);
+                  setValue(e.target.value)
+                }}
                 onClick={() => setIsSearchClick(true)}  
-                onKeyDown={handleKeyDown} />
+                onKeyDown={handleKeyDown} 
+                />
                 <img src={FilterIcon} alt="" className="search-icon" />
                 {isSearchClick && (
                   //{searchRef} 要放在父元素上
                   <div className="absolute w-full top-full rounded-[16px] shadow-[4px_9px_25px_rgba(59,63,69,0.15)] z-10 bg-white p-6">
+                    {/* 搜尋紀錄: 紀錄有值才顯示 */}
                     {searchHistory.length ? (
                       <>
                         <h1 className="text-[18px] font-[600] mb-2" style={{color:'#3b3f45'}}>{t('search_history')}</h1>
@@ -184,7 +236,13 @@ const Search = () => {
                                 <img src={IconSearchHistory} alt="" />
                                 <span className="cursor-pointer text-gray-800 hover:text-gray-400" onClick={() => handleSearch(item)} >{item}</span>
                               </div>
-                              <button className="hover:text-gray-400" onClick={()=> handleDeleteSearchHistory(item)}>
+                              <button 
+                              className="hover:text-gray-400 cursor-pointer" 
+                              onClick={(e)=> {
+                                // 阻止事件冒泡(避免點擊刪除按鈕時，也會觸發搜尋歷史的點擊事件)
+                                e.stopPropagation()
+                                handleDeleteSearchHistory(item)
+                              }}>
                                 <i className="fa-solid fa-xmark " style={{color:'#959ba1'}}></i>
                               </button>
                             </li>
@@ -222,17 +280,18 @@ const Search = () => {
 
           {!searchData.length ? (
             <p className="search-results text-center m-52">{t('no_activities')}</p>
+            
           ) : (
           <div className="flex justify-center flex-wrap gap-x-[30px] gap-y-[16px]">
             {searchData.map(item => (
               <EventCard
-                  key={item.id}
-                  image={item.image}
-                  time={item.time}
-                  title={item.title}
-                  location={item.location}
-                  tag={item.tag}
-                  onGoToPage={()=> navigate(`/event/${item.id}`)}
+                key={item.id}
+                image={item.image}
+                time={item.time}
+                title={item.title}
+                location={item.location}
+                tag={item.tag}
+                onGoToPage={()=> navigate(`/event/${item.id}`)}
               />
             ))}
           </div>

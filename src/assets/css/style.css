@@ -76,7 +76,7 @@ a{
 /*-------------------------------------*\
     Navigation
 \*-------------------------------------*/
-/* ---home-header--- */
+/* ---home-header , search-header--- */
 .header-wrapper,
 .search-header-wrapper{
     position: fixed;
@@ -251,7 +251,6 @@ a{
     position: fixed; 
     top: 50px;
     width: 100%;
-    height: 72px;
     background-color: #fff;
     box-shadow: 0px 2px 15px rgba(0, 0, 0, .197498);
     margin-bottom: 10px;
@@ -272,6 +271,24 @@ a{
    margin: 16px 0;
    padding: 6px 0;
    text-align: center;
+}
+@media (max-width: 768px) {
+    .tab-list-container {
+        top: 40px;
+    }
+    .tab-inner {
+        margin: 12px 0;
+        padding: 4px 0;
+    }
+}
+@media (max-width: 640px) {
+    .tab-list-container {
+        top: 35px;
+    }
+    .tab-inner {
+        margin: 8px 0;
+        padding: 3px 0;
+    }
 }
 .tab-icon{
     display: inline-block;
@@ -402,6 +419,23 @@ a{
 }
 .SearchPageBar{
     padding: 24px 0;
+    transition: all 0.2s ease;
+}
+/* 監測滾動： SearchPageBar變sticky效果 */
+.SearchPageBar.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+    padding: 12px 0;
+}
+.search-header-wrapper.hidden {
+    transform: translateY(-100%);
+    transition: transform 0.2s ease;
 }
 .SearchBarDrown{
     position: relative;
@@ -430,7 +464,7 @@ a{
     border: none;
 }
 .SearchPage-divider{
-    border-bottom: 1px solid #eff4fb;
+    border-bottom: 1px solid #e6e6e6;
     margin-top: 16px;
 }
 .tag-module{
@@ -662,8 +696,6 @@ a{
     box-shadow: 0px 10px 35px rgba(0, 0, 0, .06) 
 }
 .article-card-image{
-    /* width: 201px; 
-    height: 201px;  */
     overflow: hidden;
     transition: transform 0.5s ease;
 }
@@ -701,6 +733,11 @@ a{
     filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.1));
     margin: 10px auto 16px;
 }
+@media (max-width: 1080px) {
+    .event-inner-container{
+        margin: 10px 8px 16px;
+    }
+}
 
 /* event-banner-box */
 .event-banner-box{
@@ -708,6 +745,12 @@ a{
 }
 .event-banner-bg{
     overflow: hidden;
+}
+.event-banner-bg img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    max-height: 400px; 
 }
 .event-detail-content{
     font-size: 16px;
@@ -717,11 +760,98 @@ a{
     padding: 24px 0 32px 48px;
     background-color: #fff;
 }
+@media (max-width: 1024px) {
+    .event-basicInfo-container{
+        padding: 24px 32px 48px;
+    }
+}
+
+
+.event-bottom-bar {
+    display: none;
+}
+/* 報名區塊rwd */
+@media (max-width: 1024px) {
+    .orgInfo-container .org-title-container,
+    .orgInfo-container .org-register-button,
+    .orgInfo-container .org-buttons-container,
+    .org-info, .orgInfo-container{
+        display: none;
+    }
+    .event-bottom-bar {
+        display: flex;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 10;
+        border-top: 1px solid #ccc;
+        background-color: #fff;
+        height: 70px;
+        align-items: center;
+        padding: 0 16px;
+        justify-content: space-between;
+    }
+    .bottom-org-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+    }
+    .bottom-org-title .avatarBase-img-container {
+        width: 42px;
+        height: 42px;
+    }
+    .bottom-org-title .org-title {
+        font-size: 14px;
+    }
+    .bottom-heart-btn {
+        margin: 0 12px;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: #f5f5f5;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .bottom-heart-btn:hover {
+        background-color: #e0e0e0;
+    }
+    .bottom-register-btn {
+        background-color: #0088d2;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 12px 30px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background-color 0.3s ease;
+    }
+    .bottom-register-btn:hover {
+        background-color: #0066a3;
+    }
+}
+@media (max-width: 640px) {
+    .event-basicInfo-container {
+        padding: 12px 16px 20px;
+        border-radius: 16px;
+    }
+}
 .event-header-container .event-title{
     font-size: 32px;
     font-weight: 600;
     color: #212121;
     line-height: 48px;
+}
+@media (max-width: 1024px) {
+    .event-header-container .event-title{
+        font-size: 20px;
+        line-height: 28px;
+    }
 }
 .event-popularity-item{
     color: #b5bac1;
@@ -1232,6 +1362,36 @@ a{
     background-color: #f1f1f1;
     font-size: 16px;
 }
+/* Payment 頁面響應式樣式細節 */
+@media (max-width: 1024px) {
+    .cartPage {
+        margin: 16px auto 20px;
+        padding: 24px 16px;
+    }
+    .couponCode-container {
+        margin-bottom: 16px;
+    }
+}
+
+@media (max-width: 640px) {
+    .cartPage {
+        margin: 8px auto 16px;
+        padding: 16px 12px;
+    }
+    .OrderDetail-headline {
+        padding: 16px 20px;
+        gap: 8px;
+    }
+    .Payment-wrap {
+        padding: 12px 16px !important;
+    }
+    .Checkout-pre-btn,
+    .Checkout-next-btn {
+        width: 100%;
+    }
+}
+
+
 /* formErrors */
 .error input {
     border: 1px solid #d84a49;
@@ -1382,32 +1542,31 @@ select::-ms-expand {
 }
 .couponCode-code{
     padding: 12px 25px;
-    width: 282px;
+    width: 300px;
+    max-width: 100%;
     height: 54px;
     font-size: 16px;
     font-weight: bold;
     color: #282828;
     border: solid 1px #e0e0e0;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+    border-radius: 4px;
     background-color: #fff;
     outline: none;
 }
 .couponCode-locked{
-    width: 374px;
     color: #6f6f6f;
     background-color: #f2f2f2;
     border-radius: 4px;
 }
 .couponCode-discount-btn{
-    width: 92px;
+    width: 300px;
+    max-width: 100%;
     height: 54px;
     color: #fff;
     font-size: 16px;
     font-weight: 500;
     border: 0;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-radius: 4px;
     background-color: #49d9b9;
     cursor: pointer;
     transition: opacity .3s;
@@ -1417,7 +1576,6 @@ select::-ms-expand {
     pointer-events: none;
 }
 .OrderDetail-headline{
-    height: 72px;
     padding: 25px 36px 25px 25px;
     justify-content: space-between;
     align-items: center;
