@@ -1,7 +1,7 @@
 const ArticleCard = ({ image, title }) => {
   const getArticleCardSize = () => {
     return `
-      w-[256px] h-[320px]
+      w-[224px] h-[288px]
       md:w-[307px] md:h-[371px]
       lg:w-[201px] lg:h-[265px]
     `

@@ -148,11 +148,22 @@ const Layout = () => {
     setIsForgotPassword(false)
   }
 
+  // 點擊 Modal的 btn時: (有token就登出,沒有token+忘記密碼就發送email,沒有token+沒有忘記密碼就登入)
+  const handleModalAction = () => {
+    if (token) {
+      logout()
+    } else if (isForgotPassword) {
+      handleForgotPasswordSubmit()
+    } else {
+      login()
+    }
+  }
+
 
   return (
     <div className="flex flex-col min-h-screen bg-[rgba(239,244,251)]">
       {getHeader()}
-      <main className={clsx("flex-1", { darkMode }) }>
+      <main className={clsx("flex-1 pb-8", { darkMode }) }>
         <Outlet />
       </main>
 
@@ -160,19 +171,26 @@ const Layout = () => {
       
       <Modal
         className='custom-loginModal flex flex-col justify-center items-center'
-        title={isForgotPassword ? t('forgot_password') : t('login')}
+        title={token ? t('logout') : (isForgotPassword ? t('forgot_password') : t('login'))}
         open={isModalOpen}
-        okText={isForgotPassword ? t('sentMail') : t('login')}
+        okText={token ? t('logout') : (isForgotPassword ? t('sentMail') : t('login'))}
         cancelText="取消"
-        onOk={isForgotPassword ? null : login}  // 忘記密碼時不執行登入
         onCancel={() => setIsModalOpen(false)}
         footer={[
-          <button key="ok" onClick={isForgotPassword ? handleForgotPasswordSubmit : login} className="ant-btn ant-btn-primary">
-            {isForgotPassword ? t('sentMail') : t('login')}
+          <button 
+            key="ok" 
+            onClick={handleModalAction} 
+            className="ant-btn ant-btn-primary"
+          >
+            {token ? t('logout') : (isForgotPassword ? t('sentMail') : t('login'))}
           </button>
         ]}
       >
-        {!isForgotPassword ? (
+        {token ? (
+          <div className="text-center">
+            <p className="text-gray-600">{userInfo.firstName}，您確定要登出帳戶嗎？</p>
+          </div>
+        ) : !isForgotPassword ? (
           <>
             {/* 登入內容 */}
             <label htmlFor="username">{t('UserName')}</label>

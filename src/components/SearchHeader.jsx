@@ -32,7 +32,7 @@ const SearchHeader = () => {
 
         <div className="search-header-user-container flex items-center">
           {token?(
-              <span className="search-header-link">{userInfo.firstName}</span>
+              <span className="search-header-link cursor-pointer" onClick={handleClickLogin}>{userInfo.firstName}</span>
           ):(
             <>
               <button className='search-header-link cursor-pointer' onClick={handleClickLogin}>{t('login')}</button>
